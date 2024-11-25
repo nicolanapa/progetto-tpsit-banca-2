@@ -11,3 +11,17 @@ double User::getBankBalance() const {
 	return bankBalance;
 }
 
+double User::getWalletMoney() const {
+	return walletMoney;
+}
+
+void User::addMoneyToBalance(double money) {
+	bankBalance += money;
+	walletMoney -= money;
+}
+
+void User::withdrawMoneyFromBalance(double money) {
+	bankBalance -= money;
+	walletMoney += money;
+}
+
