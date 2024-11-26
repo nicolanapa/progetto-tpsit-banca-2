@@ -6,6 +6,14 @@ void Bank::addUser(std::string name, double moneyInWallet) {
 	usersList.push_back(temporaryUser);
 }
 
+bool Bank::checkUsername(std::string name) {
+	for (size_t c{ 0 }; c < usersList.size(); c++) {
+		if (usersList.at(c).getUsername() == name) {
+			return false;
+		}
+	}
+}
+
 int Bank::getUser(std::string name) const {
 	int index{ -1 };
 	for (size_t c{ 0 }; c < usersList.size(); c++) {
@@ -43,24 +51,20 @@ double Bank::getUserUndepositedMoney(std::string user) {
 	return balance;
 }
 
-void Bank::depositMoney(std::string user, double money) {
+bool Bank::depositMoney(std::string user, double money) {
 	int pos{ getUser(user) };
-	if (pos == -1) {
-		return;
-	}
 	if (money > usersList.at(pos).getWalletMoney()) {
-		return;
+		return false;
 	}
 	usersList.at(pos).addMoneyToBalance(money);
+	return true;
 }
 
-void Bank::withdrawMoney(std::string user, double money) {
+bool Bank::withdrawMoney(std::string user, double money) {
 	int pos{ getUser(user) };
-	if (pos == -1) {
-		return;
-	}
 	if (money > usersList.at(pos).getBankBalance()) {
-		return;
+		return false;
 	}
 	usersList.at(pos).withdrawMoneyFromBalance(money);
+	return true;
 }
