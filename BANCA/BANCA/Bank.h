@@ -17,5 +17,8 @@ public:
 	double getUserUndepositedMoney(std::string user);
 	bool depositMoney(std::string user, double money);
 	bool withdrawMoney(std::string user, double money);
+	void makeInvestment(std::string user, double money, int increaseRate, int period, int profRisk, std::string date0);
+	void monthlyMoneyAddition(std::string user);
+	void showInvestments(std::string user);
 };
 

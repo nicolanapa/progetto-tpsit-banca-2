@@ -2,6 +2,7 @@
 #include "Investment.h"
 #include <string>
 #include <vector>
+#include <iostream>
 
 class User
 {
@@ -17,5 +18,9 @@ public:
 	double getWalletMoney() const;
 	void addMoneyToBalance(double money);
 	void withdrawMoneyFromBalance(double money);
+	void addMoneyWallet(double money);
+	void addInvestment(double money, int increaseRate, int period, int profRisk, std::string date0);
+	void removeMoneyBalance(double money);
+	void printInvestments();
 };
 

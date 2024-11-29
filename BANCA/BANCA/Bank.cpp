@@ -12,6 +12,7 @@ bool Bank::checkUsername(std::string name) {
 			return false;
 		}
 	}
+	return true;
 }
 
 int Bank::getUser(std::string name) const {
@@ -67,4 +68,20 @@ bool Bank::withdrawMoney(std::string user, double money) {
 	}
 	usersList.at(pos).withdrawMoneyFromBalance(money);
 	return true;
+}
+
+void Bank::monthlyMoneyAddition(std::string user) {
+	int pos{ getUser(user) };
+	usersList.at(pos).addMoneyWallet(100);
+}
+
+void Bank::makeInvestment(std::string user, double money, int increaseRate, int period, int profRisk, std::string date0) {
+	int pos{ getUser(user) };
+	usersList.at(pos).addInvestment(money, increaseRate, period, profRisk, date0);
+	usersList.at(pos).removeMoneyBalance(money);
+}
+
+void Bank::showInvestments(std::string user) {
+	int pos{ getUser(user) };
+	usersList.at(pos).printInvestments();
 }
