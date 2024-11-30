@@ -1,4 +1,6 @@
-#pragma once
+#ifndef BANK_H
+#define BANK_H
+
 #include "User.h"
 #include <iostream>
 #include <vector>
@@ -20,5 +22,7 @@ public:
 	void makeInvestment(std::string user, double money, int increaseRate, int period, int profRisk, std::string date0);
 	void monthlyMoneyAddition(std::string user);
 	void showInvestments(std::string user);
+	void updateInvestments(std::string user);
 };
 
+#endif

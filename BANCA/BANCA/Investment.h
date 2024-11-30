@@ -1,4 +1,6 @@
-#pragma once
+#ifndef INVESTMENT_H
+#define INVESTMENT_H
+
 #include <string>
 
 class Investment
@@ -17,3 +19,4 @@ public:
 	Investment(double money, int increaseRate, int period, int profRisk, std::string date0);
 };
 
+#endif

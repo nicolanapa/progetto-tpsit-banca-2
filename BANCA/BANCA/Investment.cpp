@@ -6,7 +6,7 @@ Investment::Investment(double money, int increaseRate, int period, int profRisk,
 	duration = period;
 	profit_risk = profRisk;
 	currentMonth = 0;
-	currentGainMoney = 0;
+	currentGainMoney = money;
 	status = true;
 	startingDate = date0;
 }

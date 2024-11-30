@@ -1,4 +1,6 @@
-#pragma once
+#ifndef USER_H
+#define USER_H
+
 #include "Investment.h"
 #include <string>
 #include <vector>
@@ -22,5 +24,8 @@ public:
 	void addInvestment(double money, int increaseRate, int period, int profRisk, std::string date0);
 	void removeMoneyBalance(double money);
 	void printInvestments();
+	void manageInvestments();
 };
+
+#endif
 

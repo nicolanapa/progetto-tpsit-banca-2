@@ -63,6 +63,7 @@ bool Bank::depositMoney(std::string user, double money) {
 
 bool Bank::withdrawMoney(std::string user, double money) {
 	int pos{ getUser(user) };
+	if (money == 0) return true;
 	if (money > usersList.at(pos).getBankBalance()) {
 		return false;
 	}
@@ -84,4 +85,9 @@ void Bank::makeInvestment(std::string user, double money, int increaseRate, int 
 void Bank::showInvestments(std::string user) {
 	int pos{ getUser(user) };
 	usersList.at(pos).printInvestments();
+}
+
+void Bank::updateInvestments(std::string user) {
+	int pos{ getUser(user) };
+	usersList.at(pos).manageInvestments();
 }
