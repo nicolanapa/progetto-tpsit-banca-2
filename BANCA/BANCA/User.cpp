@@ -109,8 +109,6 @@ void User::manageInvestments() {
 			if (investmentsList.at(c).currentMonth == investmentsList.at(c).duration) {
 				bankBalance += investmentsList.at(c).currentGainMoney;
 				investmentsList.at(c).status = false;
-				investmentsList.push_back(investmentsList.at(c));
-				investmentsList.erase(investmentsList.begin() + c);
 			}
 		}
 	}
