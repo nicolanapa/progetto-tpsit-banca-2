@@ -25,6 +25,7 @@ public:
 	void removeMoneyBalance(double money);
 	void printInvestments();
 	void manageInvestments();
+	bool checkStatusInvestments();
 };
 
 #endif

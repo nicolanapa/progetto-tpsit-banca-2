@@ -23,6 +23,7 @@ public:
 	void monthlyMoneyAddition(std::string user);
 	void showInvestments(std::string user);
 	void updateInvestments(std::string user);
+	bool checkAllInvestmentsStatus(std::string user);
 };
 
 #endif

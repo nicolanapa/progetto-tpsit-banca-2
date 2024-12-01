@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <iomanip>
 #include <climits>
+#include <limits>
 #include <ctime>
 #include "Bank.h"
 #include "User.h"
@@ -14,7 +15,7 @@
 #define CLEAR_COMMAND "clear"
 #endif
 
-void clearScreen() {
+static void clearScreen() {
     system(CLEAR_COMMAND);
 }
 
@@ -24,6 +25,7 @@ void printCategoriesInvestments();
 void printSubcategoriesInvestments();
 std::string getMonth();
 void printDate();
+void printInfoInvestment();
 
 int year = 2024;
 int month = 1;
@@ -33,7 +35,6 @@ int main() {
     std::cout << std::fixed << std::setprecision(2);
 
     Bank firstBank;
-    bool end = false;
 
     std::string username, tempData;
     double tempMoney{ 0 };
@@ -53,7 +54,7 @@ int main() {
     std::cin >> tempMoney;
     firstBank.addUser(username, tempMoney);
 
-    while (!end) {
+    while (true) {
         if (periodSkip == 0) {
 
             do {
@@ -101,8 +102,8 @@ int main() {
                         resetCin();
                         clearScreen();
                         printCategoriesInvestments();
-                        if (!(std::cin >> investmentAction)) investmentAction = 5;
-                        if (investmentAction > 4) continue;
+                        if (!(std::cin >> investmentAction)) investmentAction = 6;
+                        if (investmentAction > 5) continue;
 
                         if (investmentAction >= 1 && investmentAction <= 3) {
 
@@ -133,6 +134,12 @@ int main() {
                             std::cout << "\nEnter any character to continue: ";
                             std::cin >> tempChar;
                         }
+                        else if (investmentAction == 5) {
+                            clearScreen();
+                            printInfoInvestment();
+                            std::cout << '\n' << '\n' << "Enter any character to continue: ";
+                            std::cin >> tempChar;
+                        }
                     } while (investmentAction != 0);
                     break;
                 case 6:
@@ -154,8 +161,21 @@ int main() {
                         periodSkip = 12;
                     }
                     break;
+                case 0:
+                    if (firstBank.checkAllInvestmentsStatus(username) == false) {
+                        clearScreen();
+                        std::cout << "\n\nThere are investments running, you can't close the app.";
+                        std::cout << "\n\nEnter any character to continue: ";
+                        std::cin >> tempChar;
+                        mainAction = 10;
+                    }
                 }
-            } while (mainAction != 6);
+            } while (mainAction != 6 && mainAction != 0);
+        }
+        if (mainAction == 0) {
+            clearScreen();
+            std::cout << "THANKS FOR USING OUR BANK";
+            break;
         }
         firstBank.updateInvestments(username);
         firstBank.monthlyMoneyAddition(username);
@@ -180,6 +200,7 @@ void printMenu() {
     std::cout << " 4) WITHDRAW MONEY\n\n";
     std::cout << " 5) INVESTMENT\n\n";
     std::cout << " 6) TIME SKIP\n\n";
+    std::cout << " 0) CLOSE APP\n\n";
     std::cout << "Enter the action you want to perform: ";
 }
 
@@ -189,6 +210,7 @@ void printCategoriesInvestments() {
     std::cout << " 2) MEDIUM-TERM INVESTMENT\n\n";
     std::cout << " 3) LONG-TERM INVESTMENT\n\n";
     std::cout << " 4) SHOW INVESTMENTS\n\n";
+    std::cout << " 5) INFO\n\n";
     std::cout << " 0) GO BACK\n\n";
     std::cout << "Enter the action you want to perform: ";
 }
@@ -212,4 +234,9 @@ void printDate() {
     std::cout << dateBorder << "\n";
     std::cout << "* " << year << "  " << getMonth() << " *\n";
     std::cout << dateBorder << "\n\n";
+}
+
+void printInfoInvestment() {
+    std::string info{ "Gli investimenti hanno una percentuale di aumento mensile ed ogni mese quella percentuale puo cambiare, andando anche in negativo.Una volta investiti tot soldi dal bilancio i soldi verrano sottrati dal bilancio ed alla fine dell'investimento verra aggiunta la somma fatta nel corso dell'investimento.Inizialmente il guadagno corrente sara uguale al capitale investito." };
+    std::cout << info;
 }

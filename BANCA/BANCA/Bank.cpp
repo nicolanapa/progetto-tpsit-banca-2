@@ -91,3 +91,8 @@ void Bank::updateInvestments(std::string user) {
 	int pos{ getUser(user) };
 	usersList.at(pos).manageInvestments();
 }
+
+bool Bank::checkAllInvestmentsStatus(std::string user) {
+	int pos{ getUser(user) };
+	return usersList.at(pos).checkStatusInvestments();
+}

@@ -113,3 +113,12 @@ void User::manageInvestments() {
 		}
 	}
 }
+
+bool User::checkStatusInvestments() {
+	for (size_t c{ 0 }; c < investmentsList.size(); c++) {
+		if (investmentsList.at(c).status == true) {
+			return false;
+		}
+	}
+	return true;
+}
