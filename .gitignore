@@ -3,6 +3,7 @@ out/
 !**/src/main/**/out/
 !**/src/test/**/out/
 .idea
+./progetto-tpsit-banca-2.iml
 
 ### Eclipse ###
 .apt_generated
