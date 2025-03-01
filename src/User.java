@@ -16,6 +16,8 @@ public class User {
         this.bankBalance = bankBalance;
     }
 
+    // Getters
+
     public String getUsername() {
         return this.username;
     }
@@ -28,27 +30,31 @@ public class User {
         return this.walletMoney;
     }
 
-    public void addMoneyToBalance(double money) {
+    // Managing Money
+
+    public void addMoneyToBalanceFromWallet(double money) {
         this.bankBalance += money;
         this.walletMoney -= money;
     }
 
-    public void withdrawMoneyFromBalance(double money) {
+    public void addMoneyToWallet(double money) {
+        this.walletMoney += money;
+    }
+
+    public void withdrawMoneyFromBalanceToWallet(double money) {
         this.bankBalance -= money;
         this.walletMoney += money;
-    }
-
-    public void addMoneyWallet(double money) {
-        this.walletMoney += money;
-    }
-
-    public void addInvestment(double amount, int increasedRate, int duration, int profitRisk, String startingDate) {
-        Investment tempInvestment = new Investment(amount, increasedRate, duration, profitRisk, startingDate);
-        investmentsList.add(tempInvestment);
     }
 
     public void removeMoneyBalance(double money) {
         this.bankBalance -= money;
+    }
+
+    // Investments related
+
+    public void addInvestment(double amount, int increasedRate, int duration, int profitRisk, String startingDate) {
+        Investment tempInvestment = new Investment(amount, increasedRate, duration, profitRisk, startingDate);
+        investmentsList.add(tempInvestment);
     }
 
     public void printInvestments() {
@@ -152,7 +158,7 @@ public class User {
         }
     }
 
-    // Can be private?
+    // Why?
     public boolean checkStatusInvestments() {
         for (int i = 0; i < investmentsList.size(); i++) {
             if (investmentsList.get(i).getStatus()) {
