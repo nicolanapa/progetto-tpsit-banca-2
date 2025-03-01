@@ -12,7 +12,7 @@ public class Main {
     public static void printMenu() {
         printDate();
 
-        System.out.println(" 1) SHOW BALANCE");
+        System.out.println();
         System.out.println(" 1) SHOW BALANCE");
         System.out.println(" 2) SHOW MONEY IN WALLET");
         System.out.println(" 3) DEPOSIT MONEY");
@@ -24,6 +24,7 @@ public class Main {
     }
 
     public static void printCategoriesInvestments() {
+        System.out.println();
         System.out.println("Investment Categories:");
         System.out.println(" 1) SHORT-TERM INVESTMENT");
         System.out.println(" 2) MEDIUM-TERM INVESTMENT");
@@ -35,6 +36,7 @@ public class Main {
     }
 
     public static void printSubcategoriesInvestments() {
+        System.out.println();
         System.out.println("Investment Subcategories:");
         System.out.println(" 1) LOW RISK - LOW PROFIT");
         System.out.println(" 2) MEDIUM RISK - MEDIUM PROFIT");
@@ -49,9 +51,9 @@ public class Main {
     }
 
     public static void printDate() {
-        String dateBorder = String.valueOf(getMonth().length() + String.valueOf(year).length() + 6 + '*');
+        String dateBorder = "*".repeat(getMonth().length() + String.valueOf(year).length() + 6);
         System.out.println(dateBorder);
-        System.out.println("* " + year + "  " + getMonth() + " *");
+        System.out.println("* " + year + " " + getMonth() + " *");
         System.out.println(dateBorder);
     }
 
@@ -109,8 +111,7 @@ public class Main {
                             System.out.println("Money in Wallet: " + firstBank.getUserWalletMoney(username) + "$");
                             System.out.println("Enter any character to continue: ");
 
-                            // std::cin >> tempChar;
-
+                            tempChar = scanner.next().charAt(0);
                             break;
                         case 3:
                             do {
