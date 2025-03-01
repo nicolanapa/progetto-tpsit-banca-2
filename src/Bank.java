@@ -2,7 +2,7 @@ import java.util.Objects;
 import java.util.Vector;
 
 public class Bank {
-    private Vector<User> usersList;
+    private Vector<User> usersList = new Vector<User>();
 
     private int getUser(String username) {
         int index = -1;
@@ -17,10 +17,10 @@ public class Bank {
 
         return index;
     }
-
+    
     public void addUser(String username, double moneyInWallet) {
         User temporaryUser = new User(username, moneyInWallet);
-        this.usersList.add(temporaryUser);
+        this.usersList.addElement(temporaryUser);
     }
 
     public boolean checkUsername(String username) {

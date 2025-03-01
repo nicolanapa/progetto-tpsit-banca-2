@@ -4,7 +4,7 @@ public class User {
     private final String username;
     private double walletMoney;
     private double bankBalance;
-    private Vector<Investment> investmentsList;
+    private Vector<Investment> investmentsList = new Vector<Investment>();
 
     public User(String username, double walletMoney) {
         this(username, walletMoney, 0);
@@ -54,7 +54,7 @@ public class User {
 
     public void addInvestment(double amount, int increasedRate, int duration, int profitRisk, String startingDate) {
         Investment tempInvestment = new Investment(amount, increasedRate, duration, profitRisk, startingDate);
-        investmentsList.add(tempInvestment);
+        investmentsList.addElement(tempInvestment);
     }
 
     public void printInvestments() {
