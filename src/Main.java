@@ -68,12 +68,12 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
 
         String username, tempData;
-        double tempMoney = 0;
+        double tempMoney;
         int periodSkip = 0;
         int mainAction = 0;
-        int investmentAction = 0;
-        int subAction = 0;
-        int timeSkipChoice = 0;
+        int investmentAction;
+        int subAction;
+        int timeSkipChoice;
         char tempChar;
 
         System.out.println("WELCOME TO THE BANK");
@@ -101,14 +101,14 @@ public class Main {
                     switch (mainAction) {
                         case 1:
                             // clearScreen();
-                            System.out.println("Balance: " + firstBank.getUserBalance(username) + "$");
+                            System.out.println("Balance: " + firstBank.getUserBalance(username, "bankBalance") + "$");
                             System.out.println("Enter any character to continue: ");
 
                             tempChar = scanner.next().charAt(0);
                             break;
                         case 2:
                             // clearScreen();
-                            System.out.println("Money in Wallet: " + firstBank.getUserWalletMoney(username) + "$");
+                            System.out.println("Money in Wallet: " + firstBank.getUserBalance(username, "walletBalance") + "$");
                             System.out.println("Enter any character to continue: ");
 
                             tempChar = scanner.next().charAt(0);
@@ -117,22 +117,22 @@ public class Main {
                             do {
                                 // resetCin();
                                 // clearScreen();
-                                System.out.println("Wallet Money: " + firstBank.getUserWalletMoney(username) + "$");
+                                System.out.println("Wallet Money: " + firstBank.getUserBalance(username, "walletBalance") + "$");
                                 System.out.println("Enter the amount to deposit: ");
 
                                 tempMoney = scanner.nextDouble();
-                            } while (!(firstBank.depositMoney(username, tempMoney)));
+                            } while (!(firstBank.manageUserMoney(username, "depositMoney", tempMoney)));
 
                             break;
                         case 4:
                             do {
                                 // resetCin();
                                 // clearScreen();
-                                System.out.println("Deposited Money: " + firstBank.getUserBalance(username) + "$");
+                                System.out.println("Deposited Money: " + firstBank.getUserBalance(username, "bankBalance") + "$");
                                 System.out.println("Enter the amount to withdraw: ");
 
                                 tempMoney = scanner.nextDouble();
-                            } while (!(firstBank.withdrawMoney(username, tempMoney)));
+                            } while (!(firstBank.manageUserMoney(username, "withdrawMoney", tempMoney)));
 
                             break;
                         case 5:
@@ -162,11 +162,11 @@ public class Main {
                                     do {
                                         // resetCin();
                                         // clearScreen();
-                                        System.out.println("Balance: " + firstBank.getUserBalance(username) + "$");
+                                        System.out.println("Balance: " + firstBank.getUserBalance(username, "bankBalance") + "$");
                                         System.out.println("Enter the amount to invest: ");
 
                                         tempMoney = scanner.nextDouble();
-                                    } while (tempMoney > firstBank.getUserBalance(username));
+                                    } while (tempMoney > firstBank.getUserBalance(username, "bankBalance"));
 
                                     tempData = month + "/" + year;
                                     firstBank.makeInvestment(username, tempMoney, 0, investmentAction * 12, subAction, tempData);
