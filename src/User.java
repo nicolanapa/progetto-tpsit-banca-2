@@ -5,18 +5,26 @@ import java.util.Vector;
 
 public class User {
     private final String username;
+    private final String hashedPassword;
     private double walletMoney;
     private double bankBalance;
     private Vector<Investment> investmentsList = new Vector<Investment>();
+    private static final Argon2PasswordEncoder argon2 = new Argon2PasswordEncoder(16, 32, 1, 65536, 10);
 
-    public User(String username, double walletMoney) {
-        this(username, walletMoney, 0);
+    public User(String username, String password, double walletMoney) {
+        this(username, password, walletMoney, 0);
     }
 
-    public User(String username, double walletMoney, double bankBalance) {
+    public User(String username, String password,
+                double walletMoney, double bankBalance) {
         this.username = username;
+        this.hashedPassword = argon2.encode(password);
         this.walletMoney = walletMoney;
         this.bankBalance = bankBalance;
+    }
+
+    public boolean checkIfPasswordMatches(String password) {
+        return argon2.matches(password, this.hashedPassword);
     }
 
     // Getters

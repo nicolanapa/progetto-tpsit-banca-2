@@ -17,7 +17,7 @@ public class Bank {
         return -1;
     }
 
-    public void addUser(String username, double moneyInWallet) {
+    public void addUser(String username, String password, double moneyInWallet) {
         if (this.getUser(username) != -1) {
             username = String.valueOf(UUID.randomUUID());
 
@@ -28,7 +28,7 @@ public class Bank {
         }
 
         System.out.println("Creating new User...");
-        User temporaryUser = new User(username, moneyInWallet);
+        User temporaryUser = new User(username, password, moneyInWallet);
         this.usersList.addElement(temporaryUser);
     }
 

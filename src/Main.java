@@ -67,7 +67,7 @@ public class Main {
 
         Scanner scanner = new Scanner(System.in);
 
-        String username, tempData;
+        String username, password, tempData;
         double tempMoney;
         int periodSkip = 0;
         int mainAction = 0;
@@ -81,10 +81,12 @@ public class Main {
                 + "inside the bank)");
         System.out.println("Enter your username: ");
         username = scanner.next();
+        System.out.println("Enter your password: ");
+        password = scanner.next();
         System.out.println("Insert the money that you have in your wallet: ");
         tempMoney = scanner.nextDouble();
 
-        firstBank.addUser(username, tempMoney);
+        firstBank.addUser(username, password, tempMoney);
 
         while (true) {
             if (periodSkip == 0) {
