@@ -1,5 +1,6 @@
 import de.mkammerer.argon2.Argon2;
 import de.mkammerer.argon2.Argon2Factory;
+import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import java.util.Vector;
 
 public class User {
@@ -171,14 +172,14 @@ public class User {
     }
 
     public static void testArgon2() {
-        Argon2 argon2 = Argon2Factory.create();
-        char[] test = "1234".toCharArray();
-        char[] test2 = "5678".toCharArray();
-        String hash = argon2.hash(22, 65536, 1, test);
+        Argon2PasswordEncoder argon2 = new Argon2PasswordEncoder(16, 32, 1, 65536, 10);
+        String test = "1234";
+        String test2 = "5678";
+        String hash = argon2.encode(test);
 
         System.out.println(hash);
-        System.out.println(true + " " + argon2.verify(hash, test));
-        System.out.println(false + " " + argon2.verify(hash, test2));
+        System.out.println(true + " " + argon2.matches(test, hash));
+        System.out.println(false + " " + argon2.matches(test2, hash));
     }
 
     public static void main(String[] args) {
