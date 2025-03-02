@@ -17,74 +17,67 @@ public class Bank {
 
         return index;
     }
-    
+
     public void addUser(String username, double moneyInWallet) {
         User temporaryUser = new User(username, moneyInWallet);
         this.usersList.addElement(temporaryUser);
     }
 
     public boolean checkUsername(String username) {
-        for (int i = 0; i < this.usersList.size(); i++) {
+        // This method will be used to check and authenticate users
+
+       /*for (int i = 0; i < this.usersList.size(); i++) {
             if (Objects.equals(this.usersList.get(i).getUsername(), username)) {
                 return false;
             }
-        }
+        }*/
 
         return true;
     }
 
-    // Merge getUserBalance and getUserWalletMoney into one method
-    public double getUserBalance(String username) {
-        double balance;
+    public double getUserBalance(String username, String typeOfBalance) {
         int index = this.getUser(username);
 
         if (index != -1) {
-            balance = this.usersList.get(index).getBankBalance();
+            return (Objects.equals(typeOfBalance, "bankBalance") ?
+                    this.usersList.get(index).getBankBalance() :
+                    this.usersList.get(index).getWalletMoney());
         } else {
             System.out.println("User doesn't exist");
 
             return 0;
         }
-
-        return balance;
     }
 
-    public double getUserWalletMoney(String username) {
-        double balance;
+    public boolean manageUserMoney(String username, String action, double money) {
         int index = this.getUser(username);
 
-        if (index != -1) {
-            balance = this.usersList.get(index).getWalletMoney();
-        } else {
+        if (index == -1) {
             System.out.println("User doesn't exist");
 
-            return 0;
-        }
-
-        return balance;
-    }
-
-    public boolean depositMoney(String username, double money) {
-        int index = this.getUser(username);
-
-        if (money > this.usersList.get(index).getWalletMoney()) {
             return false;
         }
 
-        this.usersList.get(index).addMoneyToBalanceFromWallet(money);
-        return true;
-    }
-
-    public boolean withdrawMoney(String username, double money) {
-        int index = this.getUser(username);
-
-        if (money == 0) {
-            return true;
-        } else if (money > this.usersList.get(index).getBankBalance()) {
+        if (money <= 0) {
             return false;
+        } else {
+            if (Objects.equals(action, "depositMoney")) {
+                if (money > this.usersList.get(index).getWalletMoney()) {
+                    return false;
+                }
+            } else {
+                if (money > this.usersList.get(index).getBankBalance()) {
+                    return false;
+                }
+            }
         }
 
-        this.usersList.get(index).withdrawMoneyFromBalanceToWallet(money);
+        if (Objects.equals(action, "depositMoney")) {
+            this.usersList.get(index).addMoneyToBalanceFromWallet(money);
+        } else {
+            this.usersList.get(index).withdrawMoneyFromBalanceToWallet(money);
+        }
+
         return true;
     }
 
