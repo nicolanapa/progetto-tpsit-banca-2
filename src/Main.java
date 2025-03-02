@@ -3,11 +3,7 @@ import java.util.Scanner;
 public class Main {
     private static int year = 2024;
     private static int month = 1;
-
-    /*void resetCin() {
-        std::cin.clear();
-        std::cin.ignore(std::numeric_limits < std::streamsize >::max (), '');
-    }*/
+    private static String currentUserLoggedIn;
 
     public static void printMenu() {
         printDate();
@@ -19,6 +15,19 @@ public class Main {
         System.out.println(" 4) WITHDRAW MONEY");
         System.out.println(" 5) INVESTMENT");
         System.out.println(" 6) TIME SKIP");
+        System.out.println(" 7) SIGN OUT FROM '" + currentUserLoggedIn + "'");
+        System.out.println(" 0) CLOSE APP");
+        System.out.println("Enter the action you want to perform: ");
+    }
+
+    public static void loginMenu() {
+        printDate();
+
+        System.out.println();
+        System.out.println(" 1) LOGIN");
+        System.out.println(" 2) SIGNUP");
+        // Delete existing user choice
+        // System.out.println(" 3) DELETE EXISTING USER");
         System.out.println(" 0) CLOSE APP");
         System.out.println("Enter the action you want to perform: ");
     }
@@ -41,6 +50,14 @@ public class Main {
         System.out.println(" 1) LOW RISK - LOW PROFIT");
         System.out.println(" 2) MEDIUM RISK - MEDIUM PROFIT");
         System.out.println(" 3) HIGH RISK - HIGH PROFIT");
+        System.out.println(" 0) GO BACK");
+        System.out.println("Enter your choice: ");
+    }
+
+    public static void timeSkipMenu() {
+        System.out.println("Duration of the time skip:");
+        System.out.println(" 1) ONE MONTH");
+        System.out.println(" 2) ONE YEAR");
         System.out.println(" 0) GO BACK");
         System.out.println("Enter your choice: ");
     }
@@ -69,18 +86,21 @@ public class Main {
 
         String username, password, tempData;
         double tempMoney;
-        int periodSkip = 0;
-        int mainAction = 0;
-        int investmentAction;
-        int subAction;
-        int timeSkipChoice;
+        int periodSkip = 0, mainAction = 0;
+        int investmentAction, subAction, timeSkipChoice, loginChoice;
+        // Redundant ?
         char tempChar;
 
         System.out.println("WELCOME TO THE BANK");
-        System.out.println("(After entering the data, you will be redirected "
-                + "inside the bank)");
+        System.out.println("(After entering the data, you will be redirected " + "inside the bank)");
+
+        // Move this into a login method, to be reused when logging in
+        // TBD, Create a signup or one single method to handle both
+        // the login and signup of users
         System.out.println("Enter your username: ");
         username = scanner.next();
+        currentUserLoggedIn = username;
+
         System.out.println("Enter your password: ");
         password = scanner.next();
         System.out.println("Insert the money that you have in your wallet: ");
@@ -91,25 +111,30 @@ public class Main {
         while (true) {
             if (periodSkip == 0) {
                 do {
-                    // resetCin();
-                    // clearScreen();
                     printMenu();
                     mainAction = scanner.nextInt();
 
-                    if (mainAction < 0 || mainAction > 6) {
+                    if (mainAction < 0 || mainAction > 7) {
                         continue;
                     }
 
                     switch (mainAction) {
+                        case 0:
+                            if (!firstBank.checkAllInvestmentsStatus(username)) {
+                                System.out.println("There are investments running, you can't close the app.");
+                                System.out.println("Enter any character to continue: ");
+                                tempChar = scanner.next().charAt(0);
+                                mainAction = 10;
+                            }
+
+                            break;
                         case 1:
-                            // clearScreen();
                             System.out.println("Balance: " + firstBank.getUserBalance(username, "bankBalance") + "$");
                             System.out.println("Enter any character to continue: ");
 
                             tempChar = scanner.next().charAt(0);
                             break;
                         case 2:
-                            // clearScreen();
                             System.out.println("Money in Wallet: " + firstBank.getUserBalance(username, "walletBalance") + "$");
                             System.out.println("Enter any character to continue: ");
 
@@ -117,8 +142,6 @@ public class Main {
                             break;
                         case 3:
                             do {
-                                // resetCin();
-                                // clearScreen();
                                 System.out.println("Wallet Money: " + firstBank.getUserBalance(username, "walletBalance") + "$");
                                 System.out.println("Enter the amount to deposit: ");
 
@@ -128,8 +151,6 @@ public class Main {
                             break;
                         case 4:
                             do {
-                                // resetCin();
-                                // clearScreen();
                                 System.out.println("Deposited Money: " + firstBank.getUserBalance(username, "bankBalance") + "$");
                                 System.out.println("Enter the amount to withdraw: ");
 
@@ -139,8 +160,6 @@ public class Main {
                             break;
                         case 5:
                             do {
-                                // resetCin();
-                                // clearScreen();
                                 printCategoriesInvestments();
                                 investmentAction = scanner.nextInt();
 
@@ -150,8 +169,6 @@ public class Main {
 
                                 if (investmentAction >= 1 && investmentAction <= 3) {
                                     do {
-                                        // resetCin();
-                                        // clearScreen();
                                         printSubcategoriesInvestments();
 
                                         subAction = scanner.nextInt();
@@ -162,8 +179,6 @@ public class Main {
                                     }
 
                                     do {
-                                        // resetCin();
-                                        // clearScreen();
                                         System.out.println("Balance: " + firstBank.getUserBalance(username, "bankBalance") + "$");
                                         System.out.println("Enter the amount to invest: ");
 
@@ -173,7 +188,6 @@ public class Main {
                                     tempData = month + "/" + year;
                                     firstBank.makeInvestment(username, tempMoney, 0, investmentAction * 12, subAction, tempData);
                                 } else if (investmentAction == 4) {
-                                    // clearScreen();
                                     printDate();
                                     System.out.println("INIZIO | " + "STATO | " + "CAPITALE INVESTITO | " + "DURATA(MESI) | " + "AUMENTO MENSILE | " + "RISCHIO | " + "GUADAGNO CORRENTE");
                                     System.out.println("Investments:");
@@ -182,7 +196,6 @@ public class Main {
 
                                     tempChar = scanner.next().charAt(0);
                                 } else if (investmentAction == 5) {
-                                    // clearScreen();
                                     printInfoInvestment();
                                     System.out.println("Enter any character to continue: ");
 
@@ -191,15 +204,8 @@ public class Main {
                             } while (investmentAction != 0);
                             break;
                         case 6:
-
                             do {
-                                // resetCin();
-                                // clearScreen();
-                                System.out.println("Duration of the time skip:");
-                                System.out.println(" 1) ONE MONTH");
-                                System.out.println(" 2) ONE YEAR");
-                                System.out.println(" 0) GO BACK");
-                                System.out.println("Enter your choice: ");
+                                timeSkipMenu();
 
                                 timeSkipChoice = scanner.nextInt();
                             } while (timeSkipChoice > 2);
@@ -214,20 +220,23 @@ public class Main {
                             }
 
                             break;
-                        case 0:
-                            if (!firstBank.checkAllInvestmentsStatus(username)) {
-                                // clearScreen();
-                                System.out.println("There are investments running, you can't close the app.");
-                                System.out.println("Enter any character to continue: ");
-                                tempChar = scanner.next().charAt(0);
-                                mainAction = 10;
+                        case 7:
+                            do {
+                                loginMenu();
+
+                                loginChoice = scanner.nextInt();
+                            } while (loginChoice > 2);
+
+                            if (loginChoice == 0) {
+                                mainAction = 0;
                             }
+
+                            break;
                     }
-                } while (mainAction != 6 && mainAction != 0);
+                } while (mainAction != 8 && mainAction != 0);
             }
 
             if (mainAction == 0) {
-                // clearScreen();
                 System.out.println("THANKS FOR USING OUR BANK");
 
                 break;
