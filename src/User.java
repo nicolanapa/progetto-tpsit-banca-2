@@ -1,3 +1,5 @@
+import de.mkammerer.argon2.Argon2;
+import de.mkammerer.argon2.Argon2Factory;
 import java.util.Vector;
 
 public class User {
@@ -158,7 +160,6 @@ public class User {
         }
     }
 
-    // Why?
     public boolean checkStatusInvestments() {
         for (int i = 0; i < investmentsList.size(); i++) {
             if (investmentsList.get(i).getStatus()) {
@@ -167,5 +168,20 @@ public class User {
         }
 
         return true;
+    }
+
+    public static void testArgon2() {
+        Argon2 argon2 = Argon2Factory.create();
+        char[] test = "1234".toCharArray();
+        char[] test2 = "5678".toCharArray();
+        String hash = argon2.hash(22, 65536, 1, test);
+
+        System.out.println(hash);
+        System.out.println(true + " " + argon2.verify(hash, test));
+        System.out.println(false + " " + argon2.verify(hash, test2));
+    }
+
+    public static void main(String[] args) {
+        testArgon2();
     }
 }
