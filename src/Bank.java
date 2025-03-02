@@ -1,24 +1,33 @@
 import java.util.Objects;
+import java.util.UUID;
 import java.util.Vector;
 
 public class Bank {
     private Vector<User> usersList = new Vector<User>();
 
     private int getUser(String username) {
-        int index = -1;
-
         for (int i = 0; i < this.usersList.size(); i++) {
             if (Objects.equals(this.usersList.get(i).getUsername(), username)) {
-                index = i;
-
-                break;
+                return i;
             }
         }
 
-        return index;
+        System.out.println("User doesn't exist");
+
+        return -1;
     }
 
     public void addUser(String username, double moneyInWallet) {
+        if (this.getUser(username) != -1) {
+            username = String.valueOf(UUID.randomUUID());
+
+            System.out.println("User already exists");
+            System.out.println("A random username was automatically " +
+                    "given for you:");
+            System.out.println(username);
+        }
+
+        System.out.println("Creating new User...");
         User temporaryUser = new User(username, moneyInWallet);
         this.usersList.addElement(temporaryUser);
     }
@@ -38,23 +47,19 @@ public class Bank {
     public double getUserBalance(String username, String typeOfBalance) {
         int index = this.getUser(username);
 
-        if (index != -1) {
-            return (Objects.equals(typeOfBalance, "bankBalance") ?
-                    this.usersList.get(index).getBankBalance() :
-                    this.usersList.get(index).getWalletMoney());
-        } else {
-            System.out.println("User doesn't exist");
-
+        if (index == -1) {
             return 0;
         }
+
+        return (Objects.equals(typeOfBalance, "bankBalance") ?
+                this.usersList.get(index).getBankBalance() :
+                this.usersList.get(index).getWalletMoney());
     }
 
     public boolean manageUserMoney(String username, String action, double money) {
         int index = this.getUser(username);
 
         if (index == -1) {
-            System.out.println("User doesn't exist");
-
             return false;
         }
 
@@ -87,7 +92,10 @@ public class Bank {
         // There's lots of samey index code
         int index = this.getUser(username);
 
-        // Add condition if index === -1
+        if (index == -1) {
+            return;
+        }
+
         this.usersList.get(index).addInvestment(money, increasedRate, duration,
                 profitRisk, startingDate);
         this.usersList.get(index).removeMoneyBalance(money);
@@ -95,21 +103,41 @@ public class Bank {
 
     public void monthlyMoneyAddition(String username) {
         int index = this.getUser(username);
+
+        if (index == -1) {
+            return;
+        }
+
         this.usersList.get(index).addMoneyToWallet(100);
     }
 
     public void showInvestmentsOfUser(String username) {
         int index = this.getUser(username);
+
+        if (index == -1) {
+            return;
+        }
+
         this.usersList.get(index).printInvestments();
     }
 
     public void updateInvestments(String username) {
         int index = this.getUser(username);
+
+        if (index == -1) {
+            return;
+        }
+
         this.usersList.get(index).manageInvestments();
     }
 
     public boolean checkAllInvestmentsStatus(String username) {
         int index = this.getUser(username);
+
+        if (index == -1) {
+            return false;
+        }
+
         return this.usersList.get(index).checkStatusInvestments();
     }
 }
