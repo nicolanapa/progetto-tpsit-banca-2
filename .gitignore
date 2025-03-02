@@ -5,6 +5,8 @@ out/
 .idea
 progetto-tpsit-banca-2.iml
 
+target
+
 ### Eclipse ###
 .apt_generated
 .classpath
