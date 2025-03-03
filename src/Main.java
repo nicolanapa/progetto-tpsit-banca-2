@@ -1,3 +1,4 @@
+import java.util.Objects;
 import java.util.Scanner;
 
 public class Main {
@@ -30,6 +31,26 @@ public class Main {
         // System.out.println(" 3) DELETE EXISTING USER");
         System.out.println(" 0) CLOSE APP");
         System.out.println("Enter the action you want to perform: ");
+    }
+
+    public static void handleAuthentication(Bank bank, Scanner scanner, String type) {
+        System.out.println("Enter your username: ");
+        currentUserLoggedIn = scanner.next();
+
+        System.out.println("Enter your password: ");
+        String password = scanner.next();
+
+        if (Objects.equals(type, "login")) {
+            if (!bank.checkUserCredentials(currentUserLoggedIn, password)) {
+                handleAuthentication(bank, scanner, type);
+            }
+        } else if (Objects.equals(type, "signup")) {
+            System.out.println("Insert the money that you have in your wallet: ");
+            double tempMoney = scanner.nextDouble();
+
+            // In case a User with the same username already exists
+            currentUserLoggedIn = bank.addUser(currentUserLoggedIn, password, tempMoney);
+        }
     }
 
     public static void printCategoriesInvestments() {
@@ -81,10 +102,9 @@ public class Main {
 
     public static void main(String[] args) {
         Bank firstBank = new Bank();
-
         Scanner scanner = new Scanner(System.in);
 
-        String username, password, tempData;
+        String tempData;
         double tempMoney;
         int periodSkip = 0, mainAction = 0;
         int investmentAction, subAction, timeSkipChoice, loginChoice;
@@ -93,20 +113,7 @@ public class Main {
 
         System.out.println("WELCOME TO THE BANK");
         System.out.println("(After entering the data, you will be redirected " + "inside the bank)");
-
-        // Move this into a login method, to be reused when logging in
-        // TBD, Create a signup or one single method to handle both
-        // the login and signup of users
-        System.out.println("Enter your username: ");
-        username = scanner.next();
-        currentUserLoggedIn = username;
-
-        System.out.println("Enter your password: ");
-        password = scanner.next();
-        System.out.println("Insert the money that you have in your wallet: ");
-        tempMoney = scanner.nextDouble();
-
-        firstBank.addUser(username, password, tempMoney);
+        handleAuthentication(firstBank, scanner, "signup");
 
         while (true) {
             if (periodSkip == 0) {
@@ -120,7 +127,7 @@ public class Main {
 
                     switch (mainAction) {
                         case 0:
-                            if (!firstBank.checkAllInvestmentsStatus(username)) {
+                            if (!firstBank.checkAllInvestmentsStatus(currentUserLoggedIn)) {
                                 System.out.println("There are investments running, you can't close the app.");
                                 System.out.println("Enter any character to continue: ");
                                 tempChar = scanner.next().charAt(0);
@@ -129,33 +136,33 @@ public class Main {
 
                             break;
                         case 1:
-                            System.out.println("Balance: " + firstBank.getUserBalance(username, "bankBalance") + "$");
+                            System.out.println("Balance: " + firstBank.getUserBalance(currentUserLoggedIn, "bankBalance") + "$");
                             System.out.println("Enter any character to continue: ");
 
                             tempChar = scanner.next().charAt(0);
                             break;
                         case 2:
-                            System.out.println("Money in Wallet: " + firstBank.getUserBalance(username, "walletBalance") + "$");
+                            System.out.println("Money in Wallet: " + firstBank.getUserBalance(currentUserLoggedIn, "walletBalance") + "$");
                             System.out.println("Enter any character to continue: ");
 
                             tempChar = scanner.next().charAt(0);
                             break;
                         case 3:
                             do {
-                                System.out.println("Wallet Money: " + firstBank.getUserBalance(username, "walletBalance") + "$");
+                                System.out.println("Wallet Money: " + firstBank.getUserBalance(currentUserLoggedIn, "walletBalance") + "$");
                                 System.out.println("Enter the amount to deposit: ");
 
                                 tempMoney = scanner.nextDouble();
-                            } while (!(firstBank.manageUserMoney(username, "depositMoney", tempMoney)));
+                            } while (!(firstBank.manageUserMoney(currentUserLoggedIn, "depositMoney", tempMoney)));
 
                             break;
                         case 4:
                             do {
-                                System.out.println("Deposited Money: " + firstBank.getUserBalance(username, "bankBalance") + "$");
+                                System.out.println("Deposited Money: " + firstBank.getUserBalance(currentUserLoggedIn, "bankBalance") + "$");
                                 System.out.println("Enter the amount to withdraw: ");
 
                                 tempMoney = scanner.nextDouble();
-                            } while (!(firstBank.manageUserMoney(username, "withdrawMoney", tempMoney)));
+                            } while (!(firstBank.manageUserMoney(currentUserLoggedIn, "withdrawMoney", tempMoney)));
 
                             break;
                         case 5:
@@ -179,19 +186,19 @@ public class Main {
                                     }
 
                                     do {
-                                        System.out.println("Balance: " + firstBank.getUserBalance(username, "bankBalance") + "$");
+                                        System.out.println("Balance: " + firstBank.getUserBalance(currentUserLoggedIn, "bankBalance") + "$");
                                         System.out.println("Enter the amount to invest: ");
 
                                         tempMoney = scanner.nextDouble();
-                                    } while (tempMoney > firstBank.getUserBalance(username, "bankBalance"));
+                                    } while (tempMoney > firstBank.getUserBalance(currentUserLoggedIn, "bankBalance"));
 
                                     tempData = month + "/" + year;
-                                    firstBank.makeInvestment(username, tempMoney, 0, investmentAction * 12, subAction, tempData);
+                                    firstBank.makeInvestment(currentUserLoggedIn, tempMoney, 0, investmentAction * 12, subAction, tempData);
                                 } else if (investmentAction == 4) {
                                     printDate();
                                     System.out.println("INIZIO | " + "STATO | " + "CAPITALE INVESTITO | " + "DURATA(MESI) | " + "AUMENTO MENSILE | " + "RISCHIO | " + "GUADAGNO CORRENTE");
                                     System.out.println("Investments:");
-                                    firstBank.showInvestmentsOfUser(username);
+                                    firstBank.showInvestmentsOfUser(currentUserLoggedIn);
                                     System.out.println("Enter any character to continue: ");
 
                                     tempChar = scanner.next().charAt(0);
@@ -229,6 +236,10 @@ public class Main {
 
                             if (loginChoice == 0) {
                                 mainAction = 0;
+                            } else if (loginChoice == 1) {
+                                handleAuthentication(firstBank, scanner, "login");
+                            } else if (loginChoice == 2) {
+                                handleAuthentication(firstBank, scanner, "signup");
                             }
 
                             break;
@@ -242,8 +253,8 @@ public class Main {
                 break;
             }
 
-            firstBank.updateInvestments(username);
-            firstBank.monthlyMoneyAddition(username);
+            firstBank.updateInvestments(currentUserLoggedIn);
+            firstBank.monthlyMoneyAddition(currentUserLoggedIn);
 
             month = (month % 12) + 1;
 
