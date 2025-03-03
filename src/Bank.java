@@ -6,13 +6,21 @@ public class Bank {
     private Vector<User> usersList = new Vector<User>();
 
     private int getUser(String username) {
+        return this.getUser(username, false);
+    }
+
+    private int getUser(String username, boolean hideError) {
+        System.out.println(usersList);
+
         for (int i = 0; i < this.usersList.size(); i++) {
             if (Objects.equals(this.usersList.get(i).getUsername(), username)) {
                 return i;
             }
         }
 
-        System.out.println("User doesn't exist");
+        if (!hideError) {
+            System.out.println("User doesn't exist");
+        }
 
         return -1;
     }
@@ -45,7 +53,7 @@ public class Bank {
     }
 
     public boolean checkUserCredentials(String username, String password) {
-        int index = this.getUser(username);
+        int index = this.getUser(username, true);
 
         if (index == -1) {
             return false;
