@@ -73,8 +73,10 @@ public class Bank {
             return false;
         }
 
-        if (money <= 0) {
+        if (money < 0) {
             return false;
+        } else if (money == 0) {
+            return true;
         } else {
             if (Objects.equals(action, "depositMoney")) {
                 if (money > this.usersList.get(index).getWalletMoney()) {
@@ -111,6 +113,7 @@ public class Bank {
         this.usersList.get(index).removeMoneyBalance(money);
     }
 
+    // Redundant method
     public void monthlyMoneyAddition(String username) {
         int index = this.getUser(username);
 
