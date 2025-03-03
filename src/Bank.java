@@ -121,17 +121,6 @@ public class Bank {
         this.usersList.get(index).removeMoneyBalance(money);
     }
 
-    // Redundant method
-    public void monthlyMoneyAddition(String username) {
-        int index = this.getUser(username);
-
-        if (index == -1) {
-            return;
-        }
-
-        this.usersList.get(index).addMoneyToWallet(100);
-    }
-
     public void showInvestmentsOfUser(String username) {
         int index = this.getUser(username);
 
@@ -142,14 +131,11 @@ public class Bank {
         this.usersList.get(index).printInvestments();
     }
 
-    public void updateInvestments(String username) {
-        int index = this.getUser(username);
-
-        if (index == -1) {
-            return;
+    public void updateInvestmentsAndMonthlyMoney() {
+        for (int i = 0; i < usersList.size(); i++) {
+            this.usersList.get(i).manageInvestments();
+            this.usersList.get(i).addMoneyToWallet(100);
         }
-
-        this.usersList.get(index).manageInvestments();
     }
 
     public boolean checkAllInvestmentsStatus(String username) {
