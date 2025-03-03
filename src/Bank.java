@@ -17,7 +17,17 @@ public class Bank {
         return -1;
     }
 
-    public void addUser(String username, String password, double moneyInWallet) {
+    public String getUsername(int index) {
+        if (index >= 0 && index < this.usersList.size()) {
+            return this.usersList.get(index).getUsername();
+        } else {
+            System.out.println("User doesn't exist");
+
+            return "";
+        }
+    }
+
+    public String addUser(String username, String password, double moneyInWallet) {
         if (this.getUser(username) != -1) {
             username = String.valueOf(UUID.randomUUID());
 
@@ -30,18 +40,18 @@ public class Bank {
         System.out.println("Creating new User...");
         User temporaryUser = new User(username, password, moneyInWallet);
         this.usersList.addElement(temporaryUser);
+
+        return username;
     }
 
-    public boolean checkUsername(String username) {
-        // This method will be used to check and authenticate users
+    public boolean checkUserCredentials(String username, String password) {
+        int index = this.getUser(username);
 
-       /*for (int i = 0; i < this.usersList.size(); i++) {
-            if (Objects.equals(this.usersList.get(i).getUsername(), username)) {
-                return false;
-            }
-        }*/
+        if (index == -1) {
+            return false;
+        }
 
-        return true;
+        return (this.usersList.get(index).checkIfPasswordMatches(password));
     }
 
     public double getUserBalance(String username, String typeOfBalance) {
