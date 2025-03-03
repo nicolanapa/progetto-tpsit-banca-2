@@ -179,6 +179,13 @@ public class User {
         return true;
     }
 
+    @Override
+    public String toString() {
+        return (this.username + ": BANK BALANCE " + this.bankBalance
+                + " WALLET BALANCE " + this.walletMoney + " INVESTMENTS "
+                + this.investmentsList.size());
+    }
+
     public static void testArgon2() {
         Argon2PasswordEncoder argon2 = new Argon2PasswordEncoder(16, 32, 1, 65536, 10);
         String test = "1234";
