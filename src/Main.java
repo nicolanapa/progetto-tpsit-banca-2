@@ -43,6 +43,9 @@ public class Main {
 
         if (Objects.equals(type, "login")) {
             if (!bank.checkUserCredentials(currentUserLoggedIn, password)) {
+                System.out.println("User or password may be wrong," +
+                        " please try again");
+
                 handleAuthentication(bank, scanner, type);
             }
         } else if (Objects.equals(type, "signup")) {
@@ -51,6 +54,8 @@ public class Main {
 
             // In case a User with the same username already exists
             currentUserLoggedIn = bank.addUser(currentUserLoggedIn, password, tempMoney);
+
+            System.out.println("You're not logged in as " + currentUserLoggedIn);
         }
     }
 
@@ -217,7 +222,7 @@ public class Main {
                                 timeSkipMenu();
 
                                 timeSkipChoice = scanner.nextInt();
-                            } while (timeSkipChoice > 2);
+                            } while (timeSkipChoice < 0 || timeSkipChoice > 2);
 
                             if (timeSkipChoice == 0) {
                                 mainAction = 1;
@@ -246,7 +251,7 @@ public class Main {
 
                             break;
                     }
-                } while (mainAction != 8 && mainAction != 0);
+                } while (mainAction != 6 && mainAction != 0);
             }
 
             if (mainAction == 0) {
@@ -255,8 +260,8 @@ public class Main {
                 break;
             }
 
-            firstBank.updateInvestments(currentUserLoggedIn);
-            firstBank.monthlyMoneyAddition(currentUserLoggedIn);
+            // Refactor this part
+            firstBank.updateInvestmentsAndMonthlyMoney();
 
             month = (month % 12) + 1;
 
