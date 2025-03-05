@@ -193,6 +193,30 @@ public class Bank {
     }
 
     public boolean loadFromDisk() {
+        try {
+            Path dataDirectory = Path.of("./data");
+            Path pathOfSave = Path.of(dataDirectory + "/bank.json");
+
+            System.out.println(dataDirectory.getParent());
+
+            if (Files.exists(pathOfSave)) {
+                System.out.println(pathOfSave.toString());
+
+                if (Files.readString(pathOfSave).isEmpty()) {
+                    return false;
+                }
+            } else {
+                System.out.println("Doesn't exist, creating it...");
+
+                Path newDirectory = Files.createDirectories(dataDirectory);
+                Path newFile = Files.createFile(pathOfSave);
+
+                return false;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         return true;
     }
 
@@ -208,7 +232,9 @@ public class Bank {
         testSaving.makeInvestment("luca", 10, 0,
                 2 * 12, 1, "January/2028");
 
-        testSaving.saveToDisk();
+        System.out.println(testSaving.saveToDisk());
+
+        System.out.println(testSaving.loadFromDisk());
     }
 
     public static void main(String[] args) {
