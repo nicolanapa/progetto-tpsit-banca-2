@@ -1,6 +1,11 @@
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.Vector;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 public class Bank {
     private Vector<User> usersList = new Vector<User>();
@@ -146,5 +151,67 @@ public class Bank {
         }
 
         return this.usersList.get(index).checkStatusInvestments();
+    }
+
+    public boolean saveToDisk() {
+        JSONObject object = new JSONObject();
+
+        JSONArray users = new JSONArray();
+
+        for (int i = 0; i < this.usersList.size(); i++) {
+            users.add(i, this.usersList.get(i).returnObject());
+        }
+
+        object.put("usersList", users);
+
+        System.out.print(object);
+
+        try {
+            // FileSystem filesystem = FileSystems.getDefault();
+            Path dataDirectory = Path.of("./data");
+            Path pathOfSave = Path.of(dataDirectory + "/bank.json");
+
+            System.out.println(dataDirectory.getParent());
+
+            if (Files.exists(pathOfSave)) {
+                System.out.println(pathOfSave.toString());
+            } else {
+                System.out.println("Doesn't exist, creating it...");
+
+                Path newDirectory = Files.createDirectories(dataDirectory);
+                Path newFile = Files.createFile(pathOfSave);
+            }
+
+            Files.writeString(pathOfSave, object.toJSONString());
+
+            System.out.println(Files.readString(pathOfSave));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return true;
+    }
+
+    public boolean loadFromDisk() {
+        return true;
+    }
+
+    public static void testSavingToDisk() {
+        Bank testSaving = new Bank();
+
+        testSaving.addUser("luca", "1234", 200);
+        testSaving.addUser("marco", "1234", 25);
+        testSaving.addUser("fabio", "5678", 50);
+
+        testSaving.makeInvestment("luca", 100, 0,
+                3 * 12, 2, "January/2025");
+        testSaving.makeInvestment("luca", 10, 0,
+                2 * 12, 1, "January/2028");
+
+        testSaving.saveToDisk();
+    }
+
+    public static void main(String[] args) {
+        testSavingToDisk();
     }
 }

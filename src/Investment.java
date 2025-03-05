@@ -1,3 +1,5 @@
+import org.json.simple.JSONObject;
+
 public class Investment {
     private double amount;
     private double increasedRate;
@@ -82,5 +84,20 @@ public class Investment {
         this.currentGainedMoney = amount;
         this.currentMonth = 0;
         this.status = true;
+    }
+
+    public JSONObject returnObject() {
+        JSONObject investment = new JSONObject();
+
+        investment.put("amount", this.amount);
+        investment.put("increasedRate", this.increasedRate);
+        investment.put("duration", this.duration);
+        investment.put("profitRisk", this.profitRisk);
+        investment.put("currentMonth", this.currentMonth);
+        investment.put("currentGainedMoney", this.currentGainedMoney);
+        investment.put("status", this.status);
+        investment.put("startingDate", this.startingDate);
+
+        return investment;
     }
 }

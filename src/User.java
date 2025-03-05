@@ -1,5 +1,7 @@
 import de.mkammerer.argon2.Argon2;
 import de.mkammerer.argon2.Argon2Factory;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import java.util.Vector;
 
@@ -179,6 +181,27 @@ public class User {
         return true;
     }
 
+    public JSONObject returnObject() {
+        JSONObject user = new JSONObject();
+
+        user.put("username", this.username);
+        user.put("hashedPassword", this.hashedPassword);
+        user.put("walletMoney", this.walletMoney);
+        user.put("bankBalance", this.bankBalance);
+
+        JSONArray investments = new JSONArray();
+
+        for (int i = 0; i < this.investmentsList.size(); i++) {
+            investments.add(i, this.investmentsList.get(i).returnObject());
+        }
+
+        user.put("investmentsList", investments);
+
+        // System.out.println(user);
+
+        return user;
+    }
+
     @Override
     public String toString() {
         return (this.username + ": BANK BALANCE " + this.bankBalance
@@ -197,7 +220,14 @@ public class User {
         System.out.println(false + " " + argon2.matches(test2, hash));
     }
 
+    public static void testJsonObject() {
+        User user = new User("tester", "1234", 100, 25);
+
+        System.out.println(user.returnObject());
+    }
+
     public static void main(String[] args) {
         testArgon2();
+        testJsonObject();
     }
 }
