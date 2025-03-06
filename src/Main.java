@@ -5,7 +5,7 @@ import java.util.Scanner;
 public class Main {
     private static int year = 2024;
     private static int month = 1;
-    private static String currentUserLoggedIn;
+    private static String currentUserLoggedIn = "";
 
     public static void printMenu() {
         printDate();
@@ -59,6 +59,26 @@ public class Main {
         }
     }
 
+    public static int loginSignupPrompt(Bank bank, Scanner scanner) {
+        int loginChoice;
+
+        do {
+            loginMenu();
+
+            loginChoice = scanner.nextInt();
+        } while (loginChoice < 0 || loginChoice > 2);
+
+        if (loginChoice == 0) {
+            return 0;
+        } else if (loginChoice == 1) {
+            handleAuthentication(bank, scanner, "login");
+        } else {
+            handleAuthentication(bank, scanner, "signup");
+        }
+
+        return -1;
+    }
+
     public static void printCategoriesInvestments() {
         System.out.println();
         System.out.println("Investment Categories:");
@@ -106,32 +126,14 @@ public class Main {
         System.out.println(info);
     }
 
-    public static void main(String[] args) {
-        Bank bank = new Bank();
-        Scanner scanner = new Scanner(System.in);
-        scanner.useLocale(Locale.ENGLISH);
-
+    public static void loop(Bank bank, Scanner scanner) {
         String tempData;
         double tempMoney;
         int periodSkip = 0, mainAction = 0;
-        int investmentAction, subAction, timeSkipChoice, loginChoice;
+        int investmentAction, subAction, timeSkipChoice;
+
         // Redundant ?
         char tempChar;
-
-        System.out.println("WELCOME TO THE BANK");
-
-        System.out.println("LOADING UP BANK DATA FROM MEMORY...");
-        if (bank.loadFromDisk()) {
-            System.out.println("LOADED SUCCESSFULLY! You'll now be prompted" +
-                    " to login or signup");
-            // Login method...
-            // Or skip initial prompt in while loop and go directly to x mainAction
-        } else {
-            System.out.println("NO DATA HAS BEEN FOUND");
-            System.out.println("(After entering new data, you will be " +
-                    "redirected inside the bank)");
-            handleAuthentication(bank, scanner, "signup");
-        }
 
         while (true) {
             if (periodSkip == 0) {
@@ -149,7 +151,7 @@ public class Main {
                                 System.out.println("There are investments running, you can't close the app.");
                                 System.out.println("Enter any character to continue: ");
                                 tempChar = scanner.next().charAt(0);
-                                mainAction = 10;
+                                mainAction = -1;
                             }
 
                             break;
@@ -246,19 +248,7 @@ public class Main {
 
                             break;
                         case 7:
-                            do {
-                                loginMenu();
-
-                                loginChoice = scanner.nextInt();
-                            } while (loginChoice > 2);
-
-                            if (loginChoice == 0) {
-                                mainAction = 0;
-                            } else if (loginChoice == 1) {
-                                handleAuthentication(bank, scanner, "login");
-                            } else if (loginChoice == 2) {
-                                handleAuthentication(bank, scanner, "signup");
-                            }
+                            mainAction = loginSignupPrompt(bank, scanner);
 
                             break;
                     }
@@ -289,5 +279,27 @@ public class Main {
 
             periodSkip--;
         }
+    }
+
+    public static void main(String[] args) {
+        Bank bank = new Bank();
+        Scanner scanner = new Scanner(System.in);
+        scanner.useLocale(Locale.ENGLISH);
+
+        System.out.println("WELCOME TO THE BANK");
+        System.out.println("LOADING UP BANK DATA FROM MEMORY...");
+
+        if (bank.loadFromDisk()) {
+            System.out.println("LOADED SUCCESSFULLY! You'll now be prompted" +
+                    " to login or signup");
+            loginSignupPrompt(bank, scanner);
+        } else {
+            System.out.println("NO DATA HAS BEEN FOUND");
+            System.out.println("(After entering a new account, you will be " +
+                    "redirected inside the bank)");
+            handleAuthentication(bank, scanner, "signup");
+        }
+
+        loop(bank, scanner);
     }
 }
