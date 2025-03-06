@@ -6,6 +6,8 @@ import java.util.UUID;
 import java.util.Vector;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 public class Bank {
     private Vector<User> usersList = new Vector<User>();
@@ -197,14 +199,31 @@ public class Bank {
             Path dataDirectory = Path.of("./data");
             Path pathOfSave = Path.of(dataDirectory + "/bank.json");
 
-            System.out.println(dataDirectory.getParent());
-
             if (Files.exists(pathOfSave)) {
                 System.out.println(pathOfSave.toString());
 
                 if (Files.readString(pathOfSave).isEmpty()) {
                     return false;
                 }
+
+                JSONParser parser = new JSONParser();
+                JSONObject object = null;
+
+                try {
+                    object = (JSONObject) parser
+                            .parse(Files.readString(pathOfSave));
+                } catch (ParseException e) {
+                    throw new RuntimeException(e);
+                }
+
+                JSONArray users = (JSONArray) object.get("usersList");
+
+                for (int i = 0; i < users.size(); i++) {
+                    this.usersList.addElement(new User((JSONObject) users.get(i)));
+                }
+
+                System.out.println(object);
+                System.out.println(users);
             } else {
                 System.out.println("Doesn't exist, creating it...");
 
