@@ -10,6 +10,19 @@ public class Investment {
     private boolean status;
     private String startingDate;
 
+    public Investment(JSONObject object) {
+        System.out.println("Imported Investment: " + object);
+
+        this.amount = (double) object.get("amount");
+        this.increasedRate = (double) object.get("increasedRate");
+        this.duration = ((Long) object.get("duration")).intValue();
+        this.profitRisk = ((Long) object.get("profitRisk")).intValue();
+        this.currentMonth = ((Long) object.get("currentMonth")).intValue();
+        this.currentGainedMoney = (double) object.get("currentGainedMoney");
+        this.status = (boolean) object.get("status");
+        this.startingDate = object.get("startingDate").toString();
+    }
+
     public double getAmount() {
         return amount;
     }
