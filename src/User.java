@@ -25,6 +25,22 @@ public class User {
         this.bankBalance = bankBalance;
     }
 
+    public User(JSONObject object) {
+        System.out.println("Imported User: " + object);
+
+        this.username = object.get("username").toString();
+        this.hashedPassword = object.get("hashedPassword").toString();
+        this.walletMoney = (double) object.get("walletMoney");
+        this.bankBalance = (double) object.get("bankBalance");
+
+        JSONArray investments = (JSONArray) object.get("investmentsList");
+
+        for (int i = 0; i < investments.size(); i++) {
+            this.investmentsList.addElement(
+                    new Investment((JSONObject) investments.get(i)));
+        }
+    }
+
     public boolean checkIfPasswordMatches(String password) {
         return argon2.matches(password, this.hashedPassword);
     }
