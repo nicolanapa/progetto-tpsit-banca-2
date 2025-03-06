@@ -138,8 +138,12 @@ public class Main {
         while (true) {
             if (periodSkip == 0) {
                 do {
-                    printMenu();
-                    mainAction = scanner.nextInt();
+                    if (Objects.equals(currentUserLoggedIn, "")) {
+                        mainAction = 7;
+                    } else {
+                        printMenu();
+                        mainAction = scanner.nextInt();
+                    }
 
                     if (mainAction < 0 || mainAction > 7) {
                         continue;
@@ -147,12 +151,12 @@ public class Main {
 
                     switch (mainAction) {
                         case 0:
-                            if (!bank.checkAllInvestmentsStatus(currentUserLoggedIn)) {
+                            /*if (!bank.checkAllInvestmentsStatus(currentUserLoggedIn)) {
                                 System.out.println("There are investments running, you can't close the app.");
                                 System.out.println("Enter any character to continue: ");
                                 tempChar = scanner.next().charAt(0);
                                 mainAction = -1;
-                            }
+                            }*/
 
                             break;
                         case 1:
@@ -292,7 +296,6 @@ public class Main {
         if (bank.loadFromDisk()) {
             System.out.println("LOADED SUCCESSFULLY! You'll now be prompted" +
                     " to login or signup");
-            loginSignupPrompt(bank, scanner);
         } else {
             System.out.println("NO DATA HAS BEEN FOUND");
             System.out.println("(After entering a new account, you will be " +
