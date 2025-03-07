@@ -11,6 +11,8 @@ import org.json.simple.parser.ParseException;
 
 public class Bank {
     private Vector<User> usersList = new Vector<User>();
+    // List of Transactions, Class Transaction with sender and receiver
+    // amount of money and action
 
     private int getUser(String username) {
         return this.getUser(username, false);
