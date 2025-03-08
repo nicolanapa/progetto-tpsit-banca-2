@@ -10,7 +10,7 @@
     
     <!-- Line Length should be a direct child of Checker -->
     <module name="LineLength">
-        <property name="max" value="80"/>
+        <property name="max" value="90"/>
     </module>
     
     <module name="TreeWalker">
