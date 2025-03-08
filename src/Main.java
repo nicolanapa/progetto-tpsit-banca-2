@@ -160,20 +160,20 @@ public class Main {
 
                             break;
                         case 1:
-                            System.out.println("Balance: " + bank.getUserBalance(currentUserLoggedIn, "bankBalance") + "$");
+                            System.out.println("Balance: " + bank.getUserBalance(currentUserLoggedIn, "bankBalance") + " €");
                             System.out.println("Enter any character to continue: ");
 
                             tempChar = scanner.next().charAt(0);
                             break;
                         case 2:
-                            System.out.println("Money in Wallet: " + bank.getUserBalance(currentUserLoggedIn, "walletBalance") + "$");
+                            System.out.println("Money in Wallet: " + bank.getUserBalance(currentUserLoggedIn, "walletBalance") + " €");
                             System.out.println("Enter any character to continue: ");
 
                             tempChar = scanner.next().charAt(0);
                             break;
                         case 3:
                             do {
-                                System.out.println("Wallet Money: " + bank.getUserBalance(currentUserLoggedIn, "walletBalance") + "$");
+                                System.out.println("Wallet Money: " + bank.getUserBalance(currentUserLoggedIn, "walletBalance") + " €");
                                 System.out.println("Enter the amount to deposit: ");
 
                                 tempMoney = scanner.nextDouble();
@@ -182,7 +182,7 @@ public class Main {
                             break;
                         case 4:
                             do {
-                                System.out.println("Deposited Money: " + bank.getUserBalance(currentUserLoggedIn, "bankBalance") + "$");
+                                System.out.println("Deposited Money: " + bank.getUserBalance(currentUserLoggedIn, "bankBalance") + " €");
                                 System.out.println("Enter the amount to withdraw: ");
 
                                 tempMoney = scanner.nextDouble();
@@ -210,7 +210,7 @@ public class Main {
                                     }
 
                                     do {
-                                        System.out.println("Balance: " + bank.getUserBalance(currentUserLoggedIn, "bankBalance") + "$");
+                                        System.out.println("Balance: " + bank.getUserBalance(currentUserLoggedIn, "bankBalance") + " €");
                                         System.out.println("Enter the amount to invest: ");
 
                                         tempMoney = scanner.nextDouble();

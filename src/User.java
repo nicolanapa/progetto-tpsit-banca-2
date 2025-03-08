@@ -100,7 +100,7 @@ public class User {
             // ?
             // tempInvestment.toString().erase(tempInvestment.length() - 4, 4);
 
-            tempInvestment.append('$');
+            tempInvestment.append(" €");
             tempInvestment.append(" | ");
             tempInvestment.append(investmentsList.get(i).getDuration());
             tempInvestment.append(" | ");
@@ -126,7 +126,7 @@ public class User {
             // ?
             // tempInvestment.toString().erase(tempInvestment.length() - 4, 4);
 
-            tempInvestment.append('$');
+            tempInvestment.append(" €");
 
             System.out.println(tempInvestment.toString());
             System.out.println();
