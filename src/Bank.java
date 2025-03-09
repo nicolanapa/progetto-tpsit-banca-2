@@ -107,8 +107,14 @@ public class Bank {
 
         if (Objects.equals(action, "depositMoney")) {
             this.usersList.get(index).addMoneyToBalanceFromWallet(money);
+            this.transactionsList.addElement(
+                    new Transaction(this.usersList.get(index), this.usersList.get(index),
+                            money, "deposit"));
         } else {
             this.usersList.get(index).withdrawMoneyFromBalanceToWallet(money);
+            this.transactionsList.addElement(
+                    new Transaction(this.usersList.get(index), this.usersList.get(index),
+                            money, "withdraw"));
         }
 
         return true;
