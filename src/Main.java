@@ -28,8 +28,6 @@ public class Main {
         System.out.println();
         System.out.println(" 1) LOGIN");
         System.out.println(" 2) SIGNUP");
-        // Delete existing user choice
-        // System.out.println(" 3) DELETE EXISTING USER");
         System.out.println(" 0) CLOSE APP");
         System.out.println("Enter the action you want to perform: ");
     }
@@ -86,7 +84,6 @@ public class Main {
         System.out.println(" 2) MEDIUM-TERM INVESTMENT");
         System.out.println(" 3) LONG-TERM INVESTMENT");
         System.out.println(" 4) SHOW INVESTMENTS");
-        System.out.println(" 5) INFO");
         System.out.println(" 0) GO BACK");
         System.out.println("Enter the action you want to perform: ");
     }
@@ -110,20 +107,18 @@ public class Main {
     }
 
     public static String getMonth() {
-        String[] months = new String[]{"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+        String[] months = new String[]{"January", "February", "March", "April", "May"
+                , "June", "July", "August", "September"
+                , "October", "November", "December"};
         return months[month - 1];
     }
 
     public static void printDate() {
-        String dateBorder = "*".repeat(getMonth().length() + String.valueOf(year).length() + 6);
+        String dateBorder = "*".repeat(getMonth().length()
+                + String.valueOf(year).length() + 6);
         System.out.println(dateBorder);
         System.out.println("* " + year + " " + getMonth() + " *");
         System.out.println(dateBorder);
-    }
-
-    public static void printInfoInvestment() {
-        String info = "Gli investimenti hanno una percentuale di aumento mensile ed ogni mese quella percentuale puo cambiare, andando anche in negativo.Una volta investiti tot soldi dal bilancio i soldi verrano sottrati dal bilancio ed alla fine dell'investimento verra aggiunta la somma fatta nel corso dell'investimento.Inizialmente il guadagno corrente sara uguale al capitale investito.";
-        System.out.println(info);
     }
 
     public static void loop(Bank bank, Scanner scanner) {
@@ -131,9 +126,6 @@ public class Main {
         double tempMoney;
         int periodSkip = 0, mainAction = 0;
         int investmentAction, subAction, timeSkipChoice;
-
-        // Redundant ?
-        char tempChar;
 
         while (true) {
             if (periodSkip == 0) {
@@ -151,42 +143,45 @@ public class Main {
 
                     switch (mainAction) {
                         case 0:
-                            /*if (!bank.checkAllInvestmentsStatus(currentUserLoggedIn)) {
-                                System.out.println("There are investments running, you can't close the app.");
-                                System.out.println("Enter any character to continue: ");
-                                tempChar = scanner.next().charAt(0);
-                                mainAction = -1;
-                            }*/
-
                             break;
                         case 1:
-                            System.out.println("Balance: " + bank.getUserBalance(currentUserLoggedIn, "bankBalance") + " €");
+                            System.out.println("Balance: "
+                                    + bank.getUserBalance(currentUserLoggedIn,
+                                    "bankBalance") + " €");
                             System.out.println("Enter any character to continue: ");
 
-                            tempChar = scanner.next().charAt(0);
+                            scanner.next();
                             break;
                         case 2:
-                            System.out.println("Money in Wallet: " + bank.getUserBalance(currentUserLoggedIn, "walletBalance") + " €");
+                            System.out.println("Money in Wallet: "
+                                    + bank.getUserBalance(currentUserLoggedIn,
+                                    "walletBalance") + " €");
                             System.out.println("Enter any character to continue: ");
 
-                            tempChar = scanner.next().charAt(0);
+                            scanner.next();
                             break;
                         case 3:
                             do {
-                                System.out.println("Wallet Money: " + bank.getUserBalance(currentUserLoggedIn, "walletBalance") + " €");
+                                System.out.println("Wallet Money: "
+                                        + bank.getUserBalance(currentUserLoggedIn,
+                                        "walletBalance") + " €");
                                 System.out.println("Enter the amount to deposit: ");
 
                                 tempMoney = scanner.nextDouble();
-                            } while (!(bank.manageUserMoney(currentUserLoggedIn, "depositMoney", tempMoney)));
+                            } while (!(bank.manageUserMoney(currentUserLoggedIn,
+                                    "depositMoney", tempMoney)));
 
                             break;
                         case 4:
                             do {
-                                System.out.println("Deposited Money: " + bank.getUserBalance(currentUserLoggedIn, "bankBalance") + " €");
+                                System.out.println("Deposited Money: "
+                                        + bank.getUserBalance(currentUserLoggedIn,
+                                        "bankBalance") + " €");
                                 System.out.println("Enter the amount to withdraw: ");
 
                                 tempMoney = scanner.nextDouble();
-                            } while (!(bank.manageUserMoney(currentUserLoggedIn, "withdrawMoney", tempMoney)));
+                            } while (!(bank.manageUserMoney(currentUserLoggedIn,
+                                    "withdrawMoney", tempMoney)));
 
                             break;
                         case 5:
@@ -210,27 +205,33 @@ public class Main {
                                     }
 
                                     do {
-                                        System.out.println("Balance: " + bank.getUserBalance(currentUserLoggedIn, "bankBalance") + " €");
-                                        System.out.println("Enter the amount to invest: ");
+                                        System.out.println("Balance: "
+                                                + bank.getUserBalance(currentUserLoggedIn,
+                                                "bankBalance") + " €");
+                                        System.out.println("Enter the amount to " +
+                                                "invest: ");
 
                                         tempMoney = scanner.nextDouble();
-                                    } while (tempMoney > bank.getUserBalance(currentUserLoggedIn, "bankBalance"));
+                                    } while (tempMoney >
+                                            bank.getUserBalance(currentUserLoggedIn,
+                                                    "bankBalance"));
 
                                     tempData = month + "/" + year;
-                                    bank.makeInvestment(currentUserLoggedIn, tempMoney, 0, investmentAction * 12, subAction, tempData);
+                                    bank.makeInvestment(currentUserLoggedIn, tempMoney,
+                                            0, investmentAction * 12,
+                                            subAction, tempData);
                                 } else if (investmentAction == 4) {
                                     printDate();
-                                    System.out.println("INIZIO | " + "STATO | " + "CAPITALE INVESTITO | " + "DURATA(MESI) | " + "AUMENTO MENSILE | " + "RISCHIO | " + "GUADAGNO CORRENTE");
+                                    System.out.println("INIZIO | " + "STATO | "
+                                            + "CAPITALE INVESTITO | " + "DURATA(MESI) | "
+                                            + "AUMENTO MENSILE | " + "RISCHIO | "
+                                            + "GUADAGNO CORRENTE");
                                     System.out.println("Investments:");
                                     bank.showInvestmentsOfUser(currentUserLoggedIn);
-                                    System.out.println("Enter any character to continue: ");
+                                    System.out.println("Enter any character to " +
+                                            "continue: ");
 
-                                    tempChar = scanner.next().charAt(0);
-                                } else if (investmentAction == 5) {
-                                    printInfoInvestment();
-                                    System.out.println("Enter any character to continue: ");
-
-                                    tempChar = scanner.next().charAt(0);
+                                    scanner.next();
                                 }
                             } while (investmentAction != 0);
                             break;

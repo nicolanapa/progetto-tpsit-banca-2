@@ -87,7 +87,8 @@ public class Investment {
         this.startingDate = startingDate;
     }
 
-    public Investment(double amount, double increasedRate, int duration, int profitRisk, String startingDate) {
+    public Investment(double amount, double increasedRate, int duration, int profitRisk,
+                      String startingDate) {
         this.amount = amount;
         this.increasedRate = increasedRate;
         this.duration = duration;

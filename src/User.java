@@ -1,5 +1,3 @@
-import de.mkammerer.argon2.Argon2;
-import de.mkammerer.argon2.Argon2Factory;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
@@ -11,7 +9,8 @@ public class User {
     private double walletMoney;
     private double bankBalance;
     private Vector<Investment> investmentsList = new Vector<Investment>();
-    private static final Argon2PasswordEncoder argon2 = new Argon2PasswordEncoder(16, 32, 1, 65536, 10);
+    private static final Argon2PasswordEncoder argon2 = new Argon2PasswordEncoder(16,
+            32, 1, 65536, 10);
 
     public User(String username, String password, double walletMoney) {
         this(username, password, walletMoney, 0);
@@ -81,33 +80,28 @@ public class User {
 
     // Investments related
 
-    public void addInvestment(double amount, int increasedRate, int duration, int profitRisk, String startingDate) {
-        Investment tempInvestment = new Investment(amount, increasedRate, duration, profitRisk, startingDate);
+    public void addInvestment(double amount, int increasedRate, int duration,
+                              int profitRisk, String startingDate) {
+        Investment tempInvestment = new Investment(amount, increasedRate, duration,
+                profitRisk, startingDate);
         investmentsList.addElement(tempInvestment);
     }
 
     public void printInvestments() {
         StringBuilder tempInvestment = new StringBuilder();
         for (int i = investmentsList.size() - 1; i >= 0; i--) {
-            // tempInvestment.clear();
-
             tempInvestment.append(investmentsList.get(i).getStartingDate());
             tempInvestment.append(" | ");
-            tempInvestment.append((investmentsList.get(i).getStatus()) ? "IN CORSO" : "FINITO");
+            tempInvestment.append((investmentsList.get(i).getStatus()) ?
+                    "IN CORSO" : "FINITO");
             tempInvestment.append(" | ");
             tempInvestment.append(investmentsList.get(i).getAmount());
-
-            // ?
-            // tempInvestment.toString().erase(tempInvestment.length() - 4, 4);
 
             tempInvestment.append(" €");
             tempInvestment.append(" | ");
             tempInvestment.append(investmentsList.get(i).getDuration());
             tempInvestment.append(" | ");
             tempInvestment.append(investmentsList.get(i).getIncreasedRate());
-
-            // ?
-            // tempInvestment.toString().erase(tempInvestment.length() - 4, 4);
 
             tempInvestment.append('%');
             tempInvestment.append(" | ");
@@ -122,9 +116,6 @@ public class User {
 
             tempInvestment.append(" | ");
             tempInvestment.append(investmentsList.get(i).getCurrentGainedMoney());
-
-            // ?
-            // tempInvestment.toString().erase(tempInvestment.length() - 4, 4);
 
             tempInvestment.append(" €");
 
@@ -145,14 +136,16 @@ public class User {
                         investmentsList.get(i).setIncreasedRate(Math.random() % 5 + 1);
 
                         if (Math.random() % 11 > 8) {
-                            investmentsList.get(i).setIncreasedRate(investmentsList.get(i).getIncreasedRate() * -1);
+                            investmentsList.get(i).setIncreasedRate(
+                                    investmentsList.get(i).getIncreasedRate() * -1);
                         }
                         break;
                     case 2:
                         investmentsList.get(i).setIncreasedRate(Math.random() % 10 + 6);
 
                         if (Math.random() % 11 > 6) {
-                            investmentsList.get(i).setIncreasedRate(investmentsList.get(i).getIncreasedRate() * -1);
+                            investmentsList.get(i).setIncreasedRate(
+                                    investmentsList.get(i).getIncreasedRate() * -1);
                         }
 
                         break;
@@ -160,15 +153,19 @@ public class User {
                         investmentsList.get(i).setIncreasedRate(Math.random() % 10 + 16);
                         if (Math.random() % 7 == 4) {
                             if (Math.random() % 11 > 4) {
-                                investmentsList.get(i).setIncreasedRate(Math.random() % 50 + 101);
+                                investmentsList.get(i).setIncreasedRate(
+                                        Math.random() % 50 + 101);
                             } else {
-                                investmentsList.get(i).setIncreasedRate((Math.random() % 50 + 101) * -1);
+                                investmentsList.get(i).setIncreasedRate(
+                                        (Math.random() % 50 + 101) * -1);
                             }
                         } else {
-                            investmentsList.get(i).setIncreasedRate(Math.random() % 10 + 16);
+                            investmentsList.get(i).setIncreasedRate(
+                                    Math.random() % 10 + 16);
 
                             if (Math.random() % 11 > 4) {
-                                investmentsList.get(i).setIncreasedRate(investmentsList.get(i).getIncreasedRate() * -1);
+                                investmentsList.get(i).setIncreasedRate(
+                                        investmentsList.get(i).getIncreasedRate() * -1);
                             }
                         }
 
@@ -177,9 +174,12 @@ public class User {
 
                 money = investmentsList.get(i).getIncreasedRate() / 100 * Math.abs(money);
 
-                investmentsList.get(i).setCurrentGainedMoney(investmentsList.get(i).getCurrentGainedMoney() + money);
-                investmentsList.get(i).setCurrentMonth(investmentsList.get(i).getCurrentMonth() + 1);
-                if (investmentsList.get(i).getCurrentMonth() == investmentsList.get(i).getDuration()) {
+                investmentsList.get(i).setCurrentGainedMoney(
+                        investmentsList.get(i).getCurrentGainedMoney() + money);
+                investmentsList.get(i).setCurrentMonth(
+                        investmentsList.get(i).getCurrentMonth() + 1);
+                if (investmentsList.get(i).getCurrentMonth() ==
+                        investmentsList.get(i).getDuration()) {
                     bankBalance += investmentsList.get(i).getCurrentGainedMoney();
                     investmentsList.get(i).setStatus(false);
                 }
@@ -212,8 +212,6 @@ public class User {
         }
 
         user.put("investmentsList", investments);
-
-        // System.out.println(user);
 
         return user;
     }

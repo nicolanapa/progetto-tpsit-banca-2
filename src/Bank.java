@@ -123,7 +123,6 @@ public class Bank {
     public void makeInvestment(String username, double money, int increasedRate,
                                int duration, int profitRisk,
                                String startingDate) {
-        // There's lots of samey index code
         int index = this.getUser(username);
 
         if (index == -1) {
@@ -176,7 +175,6 @@ public class Bank {
         System.out.print(object);
 
         try {
-            // FileSystem filesystem = FileSystems.getDefault();
             Path dataDirectory = Path.of("./data");
             Path pathOfSave = Path.of(dataDirectory + "/bank.json");
 
