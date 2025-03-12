@@ -1,8 +1,16 @@
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Scanner;
 
 public class Main {
+    // Unit Test
+
     private static int year = 2024;
     private static int month = 1;
     private static String currentUserLoggedIn = "";
@@ -119,6 +127,72 @@ public class Main {
         System.out.println(dateBorder);
         System.out.println("* " + year + " " + getMonth() + " *");
         System.out.println(dateBorder);
+    }
+
+    public static boolean saveToDisk() {
+        JSONObject object = new JSONObject();
+
+        object.put("year", year);
+        object.put("month", month);
+
+        try {
+            Path dataDirectory = Path.of("./data");
+            Path pathOfSave = Path.of(dataDirectory + "/main.json");
+
+            if (!Files.exists(pathOfSave)) {
+                System.out.println("main.json doesn't exist, creating it...");
+
+                Path newDirectory = Files.createDirectories(dataDirectory);
+                Path newFile = Files.createFile(pathOfSave);
+            }
+
+            Files.writeString(pathOfSave, object.toJSONString());
+        } catch (IOException e) {
+            e.printStackTrace();
+
+            return false;
+        }
+
+        return true;
+    }
+
+    public static boolean loadFromDisk() {
+        try {
+            Path dataDirectory = Path.of("./data");
+            Path pathOfSave = Path.of(dataDirectory + "/main.json");
+
+            if (Files.exists(pathOfSave)) {
+                if (Files.readString(pathOfSave).isEmpty()) {
+                    return false;
+                }
+
+                JSONParser parser = new JSONParser();
+                JSONObject object = null;
+
+                try {
+                    object = (JSONObject) parser
+                            .parse(Files.readString(pathOfSave));
+                } catch (ParseException e) {
+                    throw new RuntimeException(e);
+                }
+
+                year = ((Long) object.get("year")).intValue();
+                month = ((Long) object.get("month")).intValue();
+            } else {
+                System.out.println("Doesn't exist, creating it...");
+
+                Path newDirectory = Files.createDirectories(dataDirectory);
+                Path newFile = Files.createFile(pathOfSave);
+
+                return false;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+
+            return false;
+        }
+
+        return true;
     }
 
     public static void loop(Bank bank, Scanner scanner) {
@@ -261,19 +335,24 @@ public class Main {
             }
 
             if (mainAction == 0) {
-                System.out.println("THANKS FOR USING OUR BANK");
+                System.out.println("THANKS FOR USING OUR BANK\n");
                 System.out.println("SAVING BANK DATA IN MEMORY...");
 
                 if (bank.saveToDisk()) {
-                    System.out.println("SUCCESSFUL");
+                    System.out.println("SUCCESSFUL BANK SAVE");
                 } else {
-                    System.out.println("FAILURE");
+                    System.out.println("FAILED BANK SAVE");
+                }
+
+                if (saveToDisk()) {
+                    System.out.println("SUCCESSFUL MAIN SAVE");
+                } else {
+                    System.out.println("FAILED MAIN SAVE");
                 }
 
                 break;
             }
 
-            // Refactor this part
             bank.updateInvestmentsAndMonthlyMoney();
 
             month = (month % 12) + 1;
@@ -295,13 +374,19 @@ public class Main {
         System.out.println("LOADING UP BANK DATA FROM MEMORY...");
 
         if (bank.loadFromDisk()) {
-            System.out.println("LOADED SUCCESSFULLY! You'll now be prompted" +
-                    " to login or signup");
+            System.out.println("BANK DATA LOADED SUCCESSFULLY!");
         } else {
             System.out.println("NO DATA HAS BEEN FOUND");
             System.out.println("(After entering a new account, you will be " +
                     "redirected inside the bank)");
             handleAuthentication(bank, scanner, "signup");
+        }
+
+        if (loadFromDisk()) {
+            System.out.println("OTHER DATA LOADED SUCCESSFULLY! " +
+                    "\nYou'll now be prompted to login or signup");
+        } else {
+            System.out.println("DEFAULT OTHER DATA LOADED!");
         }
 
         loop(bank, scanner);
