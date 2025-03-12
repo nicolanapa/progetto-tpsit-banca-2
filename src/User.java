@@ -25,8 +25,6 @@ public class User {
     }
 
     public User(JSONObject object) {
-        System.out.println("Imported User: " + object);
-
         this.username = object.get("username").toString();
         this.hashedPassword = object.get("hashedPassword").toString();
         this.walletMoney = (double) object.get("walletMoney");
@@ -119,7 +117,7 @@ public class User {
 
             tempInvestment.append(" €");
 
-            System.out.println(tempInvestment.toString());
+            System.out.println(tempInvestment);
             System.out.println();
         }
     }

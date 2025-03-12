@@ -11,8 +11,6 @@ public class Investment {
     private String startingDate;
 
     public Investment(JSONObject object) {
-        System.out.println("Imported Investment: " + object);
-
         this.amount = (double) object.get("amount");
         this.increasedRate = (double) object.get("increasedRate");
         this.duration = ((Long) object.get("duration")).intValue();

@@ -11,6 +11,7 @@ import org.json.simple.parser.ParseException;
 
 public class Bank {
     private Vector<User> usersList = new Vector<User>();
+    // Save transactionsList in bank.json
     private Vector<Transaction> transactionsList = new Vector<Transaction>();
 
     private int getUser(String username) {
@@ -18,7 +19,7 @@ public class Bank {
     }
 
     private int getUser(String username, boolean hideError) {
-        System.out.println(usersList);
+        // System.out.println(usersList);
 
         for (int i = 0; i < this.usersList.size(); i++) {
             if (Objects.equals(this.usersList.get(i).getUsername(), username)) {
@@ -172,28 +173,22 @@ public class Bank {
 
         object.put("usersList", users);
 
-        System.out.print(object);
-
         try {
             Path dataDirectory = Path.of("./data");
             Path pathOfSave = Path.of(dataDirectory + "/bank.json");
 
-            System.out.println(dataDirectory.getParent());
-
-            if (Files.exists(pathOfSave)) {
-                System.out.println(pathOfSave.toString());
-            } else {
-                System.out.println("Doesn't exist, creating it...");
+            if (!Files.exists(pathOfSave)) {
+                System.out.println("bank.json doesn't exist, creating it...");
 
                 Path newDirectory = Files.createDirectories(dataDirectory);
                 Path newFile = Files.createFile(pathOfSave);
             }
 
             Files.writeString(pathOfSave, object.toJSONString());
-
-            System.out.println(Files.readString(pathOfSave));
         } catch (IOException e) {
             e.printStackTrace();
+
+            return false;
         }
 
         return true;
@@ -205,8 +200,6 @@ public class Bank {
             Path pathOfSave = Path.of(dataDirectory + "/bank.json");
 
             if (Files.exists(pathOfSave)) {
-                System.out.println(pathOfSave.toString());
-
                 if (Files.readString(pathOfSave).isEmpty()) {
                     return false;
                 }
@@ -226,11 +219,8 @@ public class Bank {
                 for (int i = 0; i < users.size(); i++) {
                     this.usersList.addElement(new User((JSONObject) users.get(i)));
                 }
-
-                System.out.println(object);
-                System.out.println(users);
             } else {
-                System.out.println("Doesn't exist, creating it...");
+                System.out.println("bank.json doesn't exist, creating it...");
 
                 Path newDirectory = Files.createDirectories(dataDirectory);
                 Path newFile = Files.createFile(pathOfSave);
