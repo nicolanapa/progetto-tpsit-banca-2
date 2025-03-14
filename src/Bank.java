@@ -45,11 +45,26 @@ public class Bank {
     }
 
     public void getUserTransactions(String username) {
-        for (int i = 0; i < this.transactionsList.size(); i++) {
+        this.getUserTransactions(username, "last");
+    }
+
+    public void getUserTransactions(String username, String filter) {
+        if (this.getUser(username) == -1) {
+            return;
+        }
+
+        System.out.println();
+
+        for (int i = this.transactionsList.size() - 1; i > 0; i--) {
             if (Objects.equals(this.transactionsList.get(i).getSender(), username) ||
                     Objects.equals(this.transactionsList.get(i).getReceiver(),
                             username)) {
-                System.out.println(this.transactionsList.get(i));
+                if (Objects.equals(filter, "all")) {
+                    System.out.println(this.transactionsList.get(i));
+                } else if (Objects.equals(filter, "last")) {
+                    System.out.println(this.transactionsList.get(i));
+                    return;
+                }
             }
         }
     }
