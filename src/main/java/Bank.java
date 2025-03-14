@@ -11,7 +11,6 @@ import org.json.simple.parser.ParseException;
 
 public class Bank {
     private Vector<User> usersList = new Vector<>();
-    // Save transactionsList in bank.json
     private Vector<Transaction> transactionsList = new Vector<>();
 
     private int getUser(String username) {
@@ -42,10 +41,6 @@ public class Bank {
 
             return "";
         }
-    }
-
-    public void getUserTransactions(String username) {
-        this.getUserTransactions(username, "last");
     }
 
     public void getUserTransactions(String username, String filter) {

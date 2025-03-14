@@ -332,7 +332,8 @@ public class Main {
                                 }
 
                                 if (transactionAction == 1) {
-                                    bank.getUserTransactions(currentUserLoggedIn);
+                                    bank.getUserTransactions(currentUserLoggedIn,
+                                            "last");
                                 } else {
                                     bank.getUserTransactions(currentUserLoggedIn,
                                             "all");
