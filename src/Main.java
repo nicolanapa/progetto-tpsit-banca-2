@@ -24,8 +24,9 @@ public class Main {
         System.out.println(" 3) DEPOSIT MONEY");
         System.out.println(" 4) WITHDRAW MONEY");
         System.out.println(" 5) INVESTMENT");
-        System.out.println(" 6) TIME SKIP");
-        System.out.println(" 7) SIGN OUT FROM '" + currentUserLoggedIn + "'");
+        System.out.println(" 6) TRANSACTIONS");
+        System.out.println(" 7) TIME SKIP");
+        System.out.println(" 8) SIGN OUT FROM '" + currentUserLoggedIn + "'");
         System.out.println(" 0) CLOSE APP");
         System.out.println("Enter the action you want to perform: ");
     }
@@ -205,13 +206,13 @@ public class Main {
             if (periodSkip == 0) {
                 do {
                     if (Objects.equals(currentUserLoggedIn, "")) {
-                        mainAction = 7;
+                        mainAction = 8;
                     } else {
                         printMenu();
                         mainAction = scanner.nextInt();
                     }
 
-                    if (mainAction < 0 || mainAction > 7) {
+                    if (mainAction < 0 || mainAction > 8) {
                         continue;
                     }
 
@@ -310,6 +311,9 @@ public class Main {
                             } while (investmentAction != 0);
                             break;
                         case 6:
+                            // Transactions
+                            break;
+                        case 7:
                             do {
                                 timeSkipMenu();
 
@@ -326,12 +330,12 @@ public class Main {
                             }
 
                             break;
-                        case 7:
+                        case 8:
                             mainAction = loginSignupPrompt(bank, scanner);
 
                             break;
                     }
-                } while (mainAction != 6 && mainAction != 0);
+                } while (mainAction != 7 && mainAction != 0);
             }
 
             if (mainAction == 0) {
