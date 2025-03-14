@@ -9,8 +9,6 @@ import java.util.Objects;
 import java.util.Scanner;
 
 public class Main {
-    // Unit Test
-
     private static int year = 2024;
     private static int month = 1;
     private static String currentUserLoggedIn = "";

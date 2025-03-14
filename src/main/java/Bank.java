@@ -266,25 +266,4 @@ public class Bank {
 
         return true;
     }
-
-    public static void testSavingToDisk() {
-        Bank testSaving = new Bank();
-
-        testSaving.addUser("luca", "1234", 200);
-        testSaving.addUser("marco", "1234", 25);
-        testSaving.addUser("fabio", "5678", 50);
-
-        testSaving.makeInvestment("luca", 100, 0,
-                3 * 12, 2, "January/2025");
-        testSaving.makeInvestment("luca", 10, 0,
-                2 * 12, 1, "January/2028");
-
-        System.out.println(testSaving.saveToDisk());
-
-        System.out.println(testSaving.loadFromDisk());
-    }
-
-    public static void main(String[] args) {
-        testSavingToDisk();
-    }
 }

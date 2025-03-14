@@ -220,26 +220,4 @@ public class User {
                 + " WALLET BALANCE " + this.walletMoney + " INVESTMENTS "
                 + this.investmentsList.size());
     }
-
-    public static void testArgon2() {
-        Argon2PasswordEncoder argon2 = new Argon2PasswordEncoder(16, 32, 1, 65536, 10);
-        String test = "1234";
-        String test2 = "5678";
-        String hash = argon2.encode(test);
-
-        System.out.println(hash);
-        System.out.println(true + " " + argon2.matches(test, hash));
-        System.out.println(false + " " + argon2.matches(test2, hash));
-    }
-
-    public static void testJsonObject() {
-        User user = new User("tester", "1234", 100, 25);
-
-        System.out.println(user.returnObject());
-    }
-
-    public static void main(String[] args) {
-        testArgon2();
-        testJsonObject();
-    }
 }
