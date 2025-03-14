@@ -10,9 +10,9 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 public class Bank {
-    private Vector<User> usersList = new Vector<User>();
+    private Vector<User> usersList = new Vector<>();
     // Save transactionsList in bank.json
-    private Vector<Transaction> transactionsList = new Vector<Transaction>();
+    private Vector<Transaction> transactionsList = new Vector<>();
 
     private int getUser(String username) {
         return this.getUser(username, false);
@@ -108,7 +108,8 @@ public class Bank {
                 this.usersList.get(index).getWalletMoney());
     }
 
-    public boolean manageUserMoney(String username, String action, double money) {
+    public boolean manageUserMoney(String username, String action, double money,
+                                   String date) {
         int index = this.getUser(username);
 
         if (index == -1) {
@@ -135,12 +136,12 @@ public class Bank {
             this.usersList.get(index).addMoneyToBalanceFromWallet(money);
             this.transactionsList.addElement(
                     new Transaction(this.usersList.get(index), this.usersList.get(index),
-                            money, "deposit"));
+                            money, "deposit", date));
         } else {
             this.usersList.get(index).withdrawMoneyFromBalanceToWallet(money);
             this.transactionsList.addElement(
                     new Transaction(this.usersList.get(index), this.usersList.get(index),
-                            money, "withdraw"));
+                            money, "withdraw", date));
         }
 
         return true;
@@ -211,8 +212,8 @@ public class Bank {
             if (!Files.exists(pathOfSave)) {
                 System.out.println("bank.json doesn't exist, creating it...");
 
-                Path newDirectory = Files.createDirectories(dataDirectory);
-                Path newFile = Files.createFile(pathOfSave);
+                Files.createDirectories(dataDirectory);
+                Files.createFile(pathOfSave);
             }
 
             Files.writeString(pathOfSave, object.toJSONString());
@@ -259,8 +260,8 @@ public class Bank {
             } else {
                 System.out.println("bank.json doesn't exist, creating it...");
 
-                Path newDirectory = Files.createDirectories(dataDirectory);
-                Path newFile = Files.createFile(pathOfSave);
+                Files.createDirectories(dataDirectory);
+                Files.createFile(pathOfSave);
 
                 return false;
             }
