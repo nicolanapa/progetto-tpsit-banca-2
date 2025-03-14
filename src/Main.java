@@ -59,7 +59,7 @@ public class Main {
             System.out.println("Insert the money that you have in your wallet: ");
             double tempMoney = scanner.nextDouble();
 
-            // In case a User with the same username already exists
+            // In case if a User with the same username already exists
             currentUserLoggedIn = bank.addUser(currentUserLoggedIn, password, tempMoney);
 
             System.out.println("You're not logged in as " + currentUserLoggedIn);
@@ -107,6 +107,15 @@ public class Main {
         System.out.println("Enter your choice: ");
     }
 
+    public static void printCategoriesTransactions() {
+        System.out.println();
+        System.out.println("Transaction Categories:");
+        System.out.println(" 1) VIEW LAST TRANSACTION");
+        System.out.println(" 2) VIEW ALL TRANSACTIONS");
+        System.out.println(" 0) GO BACK");
+        System.out.println("Enter your choice: ");
+    }
+
     public static void timeSkipMenu() {
         System.out.println("Duration of the time skip:");
         System.out.println(" 1) ONE MONTH");
@@ -143,8 +152,8 @@ public class Main {
             if (!Files.exists(pathOfSave)) {
                 System.out.println("main.json doesn't exist, creating it...");
 
-                Path newDirectory = Files.createDirectories(dataDirectory);
-                Path newFile = Files.createFile(pathOfSave);
+                Files.createDirectories(dataDirectory);
+                Files.createFile(pathOfSave);
             }
 
             Files.writeString(pathOfSave, object.toJSONString());
@@ -182,8 +191,8 @@ public class Main {
             } else {
                 System.out.println("Doesn't exist, creating it...");
 
-                Path newDirectory = Files.createDirectories(dataDirectory);
-                Path newFile = Files.createFile(pathOfSave);
+                Files.createDirectories(dataDirectory);
+                Files.createFile(pathOfSave);
 
                 return false;
             }
@@ -200,7 +209,7 @@ public class Main {
         String tempData;
         double tempMoney;
         int periodSkip = 0, mainAction = 0;
-        int investmentAction, subAction, timeSkipChoice;
+        int investmentAction, subAction, transactionAction, timeSkipChoice;
 
         while (true) {
             if (periodSkip == 0) {
@@ -215,6 +224,8 @@ public class Main {
                     if (mainAction < 0 || mainAction > 8) {
                         continue;
                     }
+
+                    String date = year + "/" + month;
 
                     switch (mainAction) {
                         case 0:
@@ -244,7 +255,7 @@ public class Main {
 
                                 tempMoney = scanner.nextDouble();
                             } while (!(bank.manageUserMoney(currentUserLoggedIn,
-                                    "depositMoney", tempMoney)));
+                                    "depositMoney", tempMoney, date)));
 
                             break;
                         case 4:
@@ -256,7 +267,7 @@ public class Main {
 
                                 tempMoney = scanner.nextDouble();
                             } while (!(bank.manageUserMoney(currentUserLoggedIn,
-                                    "withdrawMoney", tempMoney)));
+                                    "withdrawMoney", tempMoney, date)));
 
                             break;
                         case 5:
@@ -309,9 +320,27 @@ public class Main {
                                     scanner.next();
                                 }
                             } while (investmentAction != 0);
+
                             break;
                         case 6:
-                            // Transactions
+                            do {
+                                printCategoriesTransactions();
+                                transactionAction = scanner.nextInt();
+
+                                if (transactionAction <= 0 || transactionAction > 2) {
+                                    continue;
+                                }
+
+                                if (transactionAction == 1) {
+                                    bank.getUserTransactions(currentUserLoggedIn);
+                                } else {
+                                    bank.getUserTransactions(currentUserLoggedIn,
+                                            "all");
+                                }
+
+                                scanner.next();
+                            } while (transactionAction != 0);
+
                             break;
                         case 7:
                             do {
