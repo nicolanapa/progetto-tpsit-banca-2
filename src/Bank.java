@@ -44,6 +44,16 @@ public class Bank {
         }
     }
 
+    public void getUserTransactions(String username) {
+        for (int i = 0; i < this.transactionsList.size(); i++) {
+            if (Objects.equals(this.transactionsList.get(i).getSender(), username) ||
+                    Objects.equals(this.transactionsList.get(i).getReceiver(),
+                            username)) {
+                System.out.println(this.transactionsList.get(i));
+            }
+        }
+    }
+
     public String addUser(String username, String password, double moneyInWallet) {
         if (this.getUser(username) != -1) {
             username = String.valueOf(UUID.randomUUID());
@@ -166,12 +176,18 @@ public class Bank {
         JSONObject object = new JSONObject();
 
         JSONArray users = new JSONArray();
+        JSONArray transactions = new JSONArray();
 
         for (int i = 0; i < this.usersList.size(); i++) {
             users.add(i, this.usersList.get(i).returnObject());
         }
 
+        for (int i = 0; i < this.transactionsList.size(); i++) {
+            transactions.add(i, this.transactionsList.get(i).returnObject());
+        }
+
         object.put("usersList", users);
+        object.put("transactionsList", transactions);
 
         try {
             Path dataDirectory = Path.of("./data");
@@ -215,9 +231,15 @@ public class Bank {
                 }
 
                 JSONArray users = (JSONArray) object.get("usersList");
+                JSONArray transactions = (JSONArray) object.get("transactionsList");
 
                 for (int i = 0; i < users.size(); i++) {
                     this.usersList.addElement(new User((JSONObject) users.get(i)));
+                }
+
+                for (int i = 0; i < transactions.size(); i++) {
+                    this.transactionsList.addElement(new Transaction(
+                            (JSONObject) transactions.get(i)));
                 }
             } else {
                 System.out.println("bank.json doesn't exist, creating it...");
