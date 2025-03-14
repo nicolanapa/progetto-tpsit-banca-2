@@ -8,7 +8,7 @@ public class Transaction {
     private final String date;
 
     public Transaction(User sender, User receiver, double amount, String date) {
-        this(sender, receiver, amount, "", "date");
+        this(sender, receiver, amount, "", date);
     }
 
     public Transaction(User sender, User receiver, double amount, String action,
